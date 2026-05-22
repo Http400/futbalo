@@ -29,6 +29,7 @@ RUN cp -r services/auth-service/src/generated services/auth-service/dist/generat
 RUN pnpm deploy --filter=@futbalo/auth-service --prod /deploy
 RUN cp -r services/auth-service/dist /deploy/dist
 RUN cp -r services/auth-service/prisma /deploy/prisma
+RUN cp services/auth-service/prisma.config.ts /deploy/prisma.config.ts
 
 FROM node:22-alpine
 WORKDIR /app

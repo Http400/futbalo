@@ -30,7 +30,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-3600}
-    command: sh -c "prisma migrate deploy && node dist/index.js"
+    ccommand: sh -c "node_modules/.bin/prisma migrate deploy && node dist/index.js"
     depends_on:
       - postgres
 
