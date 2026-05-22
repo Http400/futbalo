@@ -81,6 +81,80 @@ To build a static Storybook:
 pnpm --filter @futbalo/ui build-storybook
 ```
 
+## Deploying to production (VPS)
+
+The project ships with Docker Compose. You need **Docker** and **Docker Compose** installed on the VPS.
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/Http400/futbalo.git
+cd futbalo
+```
+
+### 2. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and fill all empty values:
+
+```env
+# PostgreSQL
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=
+POSTGRES_DB=futbalo
+
+# Auth Service
+JWT_SECRET=
+
+# pgAdmin
+PGADMIN_DEFAULT_EMAIL=admin@futbalo.eu
+PGADMIN_DEFAULT_PASSWORD=
+```
+
+### 3. Point your domains to the VPS
+
+Add DNS `A` records for:
+
+| Subdomain | Points to |
+|---|---|
+| `www.futbalo.eu` | VPS IP |
+| `admin.futbalo.eu` | VPS IP |
+| `api.futbalo.eu` | VPS IP |
+| `pgadmin.futbalo.eu` | VPS IP |
+
+### 4. Build and start
+
+```bash
+docker compose up --build -d
+```
+
+This will:
+- Build all three app images from source
+- Start PostgreSQL and run Prisma migrations automatically
+- Serve everything behind nginx on port **80**
+
+### 5. Verify
+
+```bash
+curl http://api.futbalo.eu/auth/health
+# {"status":"ok","service":"auth-service"}
+```
+
+### Useful commands
+
+```bash
+docker compose logs -f              # Follow logs for all services
+docker compose logs -f auth-service # Follow a specific service
+docker compose down                 # Stop all services
+docker compose down -v              # Stop and delete database volume
+docker compose up --build -d        # Rebuild and restart after code changes
+```
+
+> **Note:** The current setup runs on HTTP (port 80). SSL support will be added in a future step.
+
 ## Scripts
 
 | Command | Description |
