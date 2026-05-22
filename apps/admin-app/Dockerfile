@@ -4,7 +4,7 @@ WORKDIR /app
 RUN corepack enable
 
 # Copy manifests first for layer caching
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY apps/web-app/package.json ./apps/web-app/
 COPY apps/admin-app/package.json ./apps/admin-app/
 COPY services/auth-service/package.json ./services/auth-service/
