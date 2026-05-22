@@ -33,9 +33,6 @@ RUN cp -r services/auth-service/prisma /deploy/prisma
 FROM node:22-alpine
 WORKDIR /app
 
-# Prisma CLI is a devDependency; install it globally so migrate deploy works at startup
-RUN npm install -g prisma@7
-
 COPY --from=builder /deploy .
 
 EXPOSE 4000
