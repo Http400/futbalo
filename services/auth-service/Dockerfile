@@ -1,6 +1,11 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+# prisma generate reads prisma.config.ts which requires DATABASE_URL;
+# supply a dummy value so the client can be generated without a real DB at build time.
+ARG DATABASE_URL=postgresql://build:build@localhost:5432/build
+ENV DATABASE_URL=${DATABASE_URL}
+
 RUN corepack enable
 
 # Copy manifests first for layer caching
@@ -14,11 +19,6 @@ COPY packages/ui/package.json ./packages/ui/
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-
-# prisma generate reads prisma.config.ts which requires DATABASE_URL;
-# supply a dummy value so the client can be generated without a real DB at build time.
-ARG DATABASE_URL=postgresql://build:build@localhost:5432/build
-ENV DATABASE_URL=${DATABASE_URL}
 
 RUN pnpm exec turbo run build --filter="@futbalo/auth-service..."
 
