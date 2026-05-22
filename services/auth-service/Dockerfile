@@ -29,8 +29,6 @@ RUN cp -r services/auth-service/src/generated services/auth-service/dist/generat
 RUN pnpm deploy --filter=@futbalo/auth-service --prod /deploy
 RUN cp -r services/auth-service/dist /deploy/dist
 RUN cp -r services/auth-service/prisma /deploy/prisma
-# prisma.config.ts imports from 'prisma/config' (a devDependency) — not needed at runtime
-RUN rm -f /deploy/prisma.config.ts
 
 FROM node:22-alpine
 WORKDIR /app
