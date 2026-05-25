@@ -62,5 +62,19 @@ services:
       - auth-service
       - pgadmin
 
+  cloudflared:
+    image: cloudflare/cloudflared:2026.3.0
+    command:
+      [
+        "tunnel",
+        "--no-autoupdate",
+        "run",
+        "--token",
+        "${CLOUDFLARED_TOKEN}"
+      ]
+    depends_on:
+      - nginx
+    restart: unless-stopped
+
 volumes:
   postgres-data:
