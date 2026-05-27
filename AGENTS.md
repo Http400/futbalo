@@ -14,7 +14,7 @@ Futbalo is a pnpm + Turborepo monorepo: React 19 front-ends (Vite), an Express 5
 - `apps/web-app` (port 3000) and `apps/admin-app` (port 3001) — React + Vite SPAs.
 - `services/auth-service` (port 4000) — Express + Prisma + PostgreSQL.
 - `packages/types` — shared TS types; `packages/ui` — shared MUI-based React components with Storybook (port 6006).
-- `nginx/`, `docker-compose.yml`, `.env.example` — VPS deploy stack. Deeper deploy notes in `@README.md` and `@deployment-idea.md`.
+- `nginx/`, `docker-compose.yml`, `.env.example` — VPS deploy stack. Deeper deploy notes in `@README.md`.
 
 ## Build, test, and development commands
 
