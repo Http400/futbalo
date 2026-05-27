@@ -18,3 +18,14 @@ services/auth-service/src/generated
 # Editor
 .DS_Store
 *.log
+
+.github/agents
+.github/skills/create-spec/
+.github/skills/discover-standards/
+.github/skills/index-standards/
+.github/skills/inject-standards/
+.github/skills/sync-standards/
+.github/skills/verify-standards/
+
+.ai/*
+!.ai/GUARDRAILS.md
