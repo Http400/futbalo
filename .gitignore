@@ -26,6 +26,3 @@ services/auth-service/src/generated
 .github/skills/inject-standards/
 .github/skills/sync-standards/
 .github/skills/verify-standards/
-
-.ai/*
-!.ai/GUARDRAILS.md

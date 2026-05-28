@@ -1,0 +1,22 @@
+# Standards index — describes each standard file in one line.
+# Inject specific standards with: /inject-standards <area>/<name>
+
+api:
+  response-format:
+    description: "ApiResponse<T>/ApiError/PaginatedResponse wrappers from @futbalo/types; error code format AREA_NNN"
+
+database:
+  prisma-setup:
+    description: "PrismaClient singleton via globalThis, generated to src/generated/prisma/, @@schema/@@map conventions, adapter-pg"
+
+global:
+  typescript-conventions:
+    description: "Env vars via bracket notation process.env['KEY'], .js extensions in service ESM imports, no any in source"
+
+testing:
+  setup:
+    description: "Vitest globals; jsdom+@testing-library/react for apps, node env for services; describe+it, getByRole queries"
+
+ui:
+  component-pattern:
+    description: "MUI wrapper components in packages/ui with named exports, index.ts barrel, autodocs Storybook stories"
