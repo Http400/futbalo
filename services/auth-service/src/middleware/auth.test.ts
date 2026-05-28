@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { requireAuth } from './auth.js';
+import { requireAuth, type AuthLocals } from './auth.js';
 
 vi.mock('../lib/jwt.js', () => ({
   verifyAccess: vi.fn(),
@@ -16,9 +16,9 @@ function makeReq(authorization?: string): Request {
 function makeRes() {
   const json = vi.fn();
   const status = vi.fn(() => ({ json }));
-  const locals: Record<string, unknown> = {};
+  const locals = {} as AuthLocals;
   return {
-    res: { status, json, locals } as unknown as Response<unknown, Record<string, unknown>>,
+    res: { status, json, locals } as unknown as Response<unknown, AuthLocals>,
     status,
     json,
     locals,

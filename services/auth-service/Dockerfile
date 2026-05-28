@@ -22,8 +22,12 @@ COPY . .
 
 RUN pnpm exec turbo run build --filter="@futbalo/auth-service..."
 
-# Copy generated Prisma client alongside compiled JS so runtime imports resolve
-RUN cp -r services/auth-service/src/generated services/auth-service/dist/generated
+# Copy generated Prisma client alongside compiled JS so runtime imports resolve.
+# TypeScript already compiles the .ts files in src/generated into dist/generated,
+# creating that directory. We use /. to copy *contents* into the existing dir so
+# pre-compiled .js/.wasm files (e.g. index.js) land at the correct path instead
+# of being nested one level deeper under dist/generated/generated/.
+RUN cp -r services/auth-service/src/generated/. services/auth-service/dist/generated/
 
 # Create a self-contained production deployment (resolves pnpm symlinks into real node_modules)
 RUN pnpm deploy --filter=@futbalo/auth-service --prod /deploy

@@ -36,8 +36,10 @@ const fakeUser = {
   id: 'user-1',
   email: 'user@example.com',
   name: 'Test User',
-  role: 'user',
+  role: 'USER' as const,
   password: 'hashed-password',
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
 beforeEach(() => {
