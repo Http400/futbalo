@@ -5,5 +5,5 @@ export interface ButtonProps extends MuiButtonProps {
 }
 
 export function Button({ label, ...props }: ButtonProps) {
-  return <MuiButton {...props}>{label}</MuiButton>;
+  return <MuiButton loadingPosition="start" {...props}>{label}</MuiButton>;
 }
