@@ -71,7 +71,7 @@ describe('requireAuth middleware', () => {
   });
 
   it('calls next() and sets res.locals.user on a valid token', () => {
-    const payload = { sub: 'user-1', email: 'user@example.com', role: 'user' };
+    const payload = { sub: 'user-1', email: 'user@example.com', role: 'user', name: 'Test User' };
     mockVerifyAccess.mockReturnValue(payload);
 
     const req = makeReq('Bearer valid-token');

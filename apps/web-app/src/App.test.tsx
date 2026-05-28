@@ -18,6 +18,7 @@ function makeStore(isAuthenticated = false) {
         isAuthenticated,
         accessToken: isAuthenticated ? 'token' : null,
         refreshToken: isAuthenticated ? 'refresh' : null,
+        name: isAuthenticated ? 'Test User' : null,
       },
     },
   });

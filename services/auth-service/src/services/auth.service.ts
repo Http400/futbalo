@@ -20,8 +20,8 @@ export class AuthError extends Error {
   }
 }
 
-function buildTokens(user: { id: string; email: string; role: string }): AuthTokens {
-  const accessToken = signAccess({ sub: user.id, email: user.email, role: user.role });
+function buildTokens(user: { id: string; email: string; role: string; name: string }): AuthTokens {
+  const accessToken = signAccess({ sub: user.id, email: user.email, role: user.role, name: user.name });
   const refreshToken = signRefresh({ sub: user.id });
   return { accessToken, refreshToken };
 }
@@ -42,7 +42,7 @@ export async function register(input: RegisterInput): Promise<AuthTokens> {
     },
   });
 
-  return buildTokens({ id: user.id, email: user.email, role: user.role });
+  return buildTokens({ id: user.id, email: user.email, role: user.role, name: user.name });
 }
 
 export async function login(input: LoginRequest): Promise<AuthTokens> {
@@ -55,7 +55,7 @@ export async function login(input: LoginRequest): Promise<AuthTokens> {
     throw new AuthError('AUTH_004', 'Invalid credentials', 401);
   }
 
-  return buildTokens({ id: user.id, email: user.email, role: user.role });
+  return buildTokens({ id: user.id, email: user.email, role: user.role, name: user.name });
 }
 
 export async function refresh(refreshToken: string): Promise<Pick<AuthTokens, 'accessToken'>> {
@@ -71,6 +71,6 @@ export async function refresh(refreshToken: string): Promise<Pick<AuthTokens, 'a
     throw new AuthError('AUTH_005', 'Invalid or expired refresh token', 401);
   }
 
-  const accessToken = signAccess({ sub: user.id, email: user.email, role: user.role });
+  const accessToken = signAccess({ sub: user.id, email: user.email, role: user.role, name: user.name });
   return { accessToken };
 }

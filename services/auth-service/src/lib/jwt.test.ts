@@ -14,12 +14,13 @@ afterEach(() => {
 
 describe('signAccess / verifyAccess', () => {
   it('signs and verifies an access token round-trip', () => {
-    const payload = { sub: 'user-1', email: 'user@example.com', role: 'user' };
+    const payload = { sub: 'user-1', email: 'user@example.com', role: 'user', name: 'Test User' };
     const token = signAccess(payload);
     const verified = verifyAccess(token);
     expect(verified.sub).toBe(payload.sub);
     expect(verified.email).toBe(payload.email);
     expect(verified.role).toBe(payload.role);
+    expect(verified.name).toBe(payload.name);
   });
 
   it('throws when verifying a tampered access token', () => {
@@ -28,7 +29,7 @@ describe('signAccess / verifyAccess', () => {
 
   it('throws when JWT_SECRET env var is missing', () => {
     vi.stubEnv('JWT_SECRET', '');
-    expect(() => signAccess({ sub: 'u', email: 'a@b.com', role: 'user' })).toThrow(
+    expect(() => signAccess({ sub: 'u', email: 'a@b.com', role: 'user', name: 'User' })).toThrow(
       'Missing required environment variable: JWT_SECRET',
     );
   });
@@ -54,7 +55,7 @@ describe('signRefresh / verifyRefresh', () => {
   });
 
   it('access token is rejected by verifyRefresh (different secret)', () => {
-    const accessToken = signAccess({ sub: 'u', email: 'a@b.com', role: 'user' });
+    const accessToken = signAccess({ sub: 'u', email: 'a@b.com', role: 'user', name: 'User' });
     expect(() => verifyRefresh(accessToken)).toThrow();
   });
 });

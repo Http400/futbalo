@@ -123,7 +123,7 @@ describe('refresh', () => {
 
     expect(result).toEqual({ accessToken: 'access-token' });
     expect(mockSignAccess).toHaveBeenCalledWith(
-      expect.objectContaining({ sub: fakeUser.id, email: fakeUser.email }),
+      expect.objectContaining({ sub: fakeUser.id, email: fakeUser.email, name: fakeUser.name }),
     );
   });
 
