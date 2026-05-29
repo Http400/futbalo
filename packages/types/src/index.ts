@@ -1,3 +1,18 @@
+export interface Stadium {
+  id: string;
+  name: string;
+  fifaName: string | null;
+  city: string;
+  country: string | null;
+  countryCode: string;
+  timezone: string;
+  capacity: number;
+  coords: string | null;
+  region: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Catalog types
 export type Continent =
   | 'AFRICA'

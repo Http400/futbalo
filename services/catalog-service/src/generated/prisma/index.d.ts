@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Stadium
+ * 
+ */
+export type Stadium = $Result.DefaultSelection<Prisma.$StadiumPayload>
+/**
  * Model Team
  * 
  */
@@ -80,8 +85,8 @@ export const Confederation: typeof $Enums.Confederation
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Teams
- * const teams = await prisma.team.findMany()
+ * // Fetch zero or more Stadiums
+ * const stadiums = await prisma.stadium.findMany()
  * ```
  *
  *
@@ -103,8 +108,8 @@ export class PrismaClient<
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Teams
-   * const teams = await prisma.team.findMany()
+   * // Fetch zero or more Stadiums
+   * const stadiums = await prisma.stadium.findMany()
    * ```
    *
    *
@@ -193,6 +198,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.stadium`: Exposes CRUD operations for the **Stadium** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Stadiums
+    * const stadiums = await prisma.stadium.findMany()
+    * ```
+    */
+  get stadium(): Prisma.StadiumDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.team`: Exposes CRUD operations for the **Team** model.
     * Example usage:
     * ```ts
@@ -665,6 +680,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Stadium: 'Stadium',
     Team: 'Team',
     Competition: 'Competition',
     Group: 'Group',
@@ -684,10 +700,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "team" | "competition" | "group" | "groupTeam"
+      modelProps: "stadium" | "team" | "competition" | "group" | "groupTeam"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Stadium: {
+        payload: Prisma.$StadiumPayload<ExtArgs>
+        fields: Prisma.StadiumFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StadiumFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StadiumFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>
+          }
+          findFirst: {
+            args: Prisma.StadiumFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StadiumFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>
+          }
+          findMany: {
+            args: Prisma.StadiumFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>[]
+          }
+          create: {
+            args: Prisma.StadiumCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>
+          }
+          createMany: {
+            args: Prisma.StadiumCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StadiumCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>[]
+          }
+          delete: {
+            args: Prisma.StadiumDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>
+          }
+          update: {
+            args: Prisma.StadiumUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>
+          }
+          deleteMany: {
+            args: Prisma.StadiumDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StadiumUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StadiumUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>[]
+          }
+          upsert: {
+            args: Prisma.StadiumUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StadiumPayload>
+          }
+          aggregate: {
+            args: Prisma.StadiumAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStadium>
+          }
+          groupBy: {
+            args: Prisma.StadiumGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StadiumGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StadiumCountArgs<ExtArgs>
+            result: $Utils.Optional<StadiumCountAggregateOutputType> | number
+          }
+        }
+      }
       Team: {
         payload: Prisma.$TeamPayload<ExtArgs>
         fields: Prisma.TeamFieldRefs
@@ -1092,6 +1182,7 @@ export namespace Prisma {
     comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
+    stadium?: StadiumOmit
     team?: TeamOmit
     competition?: CompetitionOmit
     group?: GroupOmit
@@ -1267,6 +1358,1131 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model Stadium
+   */
+
+  export type AggregateStadium = {
+    _count: StadiumCountAggregateOutputType | null
+    _avg: StadiumAvgAggregateOutputType | null
+    _sum: StadiumSumAggregateOutputType | null
+    _min: StadiumMinAggregateOutputType | null
+    _max: StadiumMaxAggregateOutputType | null
+  }
+
+  export type StadiumAvgAggregateOutputType = {
+    capacity: number | null
+  }
+
+  export type StadiumSumAggregateOutputType = {
+    capacity: number | null
+  }
+
+  export type StadiumMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    fifaName: string | null
+    city: string | null
+    country: string | null
+    countryCode: string | null
+    timezone: string | null
+    capacity: number | null
+    coords: string | null
+    region: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StadiumMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    fifaName: string | null
+    city: string | null
+    country: string | null
+    countryCode: string | null
+    timezone: string | null
+    capacity: number | null
+    coords: string | null
+    region: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type StadiumCountAggregateOutputType = {
+    id: number
+    name: number
+    fifaName: number
+    city: number
+    country: number
+    countryCode: number
+    timezone: number
+    capacity: number
+    coords: number
+    region: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type StadiumAvgAggregateInputType = {
+    capacity?: true
+  }
+
+  export type StadiumSumAggregateInputType = {
+    capacity?: true
+  }
+
+  export type StadiumMinAggregateInputType = {
+    id?: true
+    name?: true
+    fifaName?: true
+    city?: true
+    country?: true
+    countryCode?: true
+    timezone?: true
+    capacity?: true
+    coords?: true
+    region?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StadiumMaxAggregateInputType = {
+    id?: true
+    name?: true
+    fifaName?: true
+    city?: true
+    country?: true
+    countryCode?: true
+    timezone?: true
+    capacity?: true
+    coords?: true
+    region?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type StadiumCountAggregateInputType = {
+    id?: true
+    name?: true
+    fifaName?: true
+    city?: true
+    country?: true
+    countryCode?: true
+    timezone?: true
+    capacity?: true
+    coords?: true
+    region?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type StadiumAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Stadium to aggregate.
+     */
+    where?: StadiumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stadiums to fetch.
+     */
+    orderBy?: StadiumOrderByWithRelationInput | StadiumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StadiumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stadiums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stadiums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Stadiums
+    **/
+    _count?: true | StadiumCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StadiumAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StadiumSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StadiumMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StadiumMaxAggregateInputType
+  }
+
+  export type GetStadiumAggregateType<T extends StadiumAggregateArgs> = {
+        [P in keyof T & keyof AggregateStadium]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStadium[P]>
+      : GetScalarType<T[P], AggregateStadium[P]>
+  }
+
+
+
+
+  export type StadiumGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StadiumWhereInput
+    orderBy?: StadiumOrderByWithAggregationInput | StadiumOrderByWithAggregationInput[]
+    by: StadiumScalarFieldEnum[] | StadiumScalarFieldEnum
+    having?: StadiumScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StadiumCountAggregateInputType | true
+    _avg?: StadiumAvgAggregateInputType
+    _sum?: StadiumSumAggregateInputType
+    _min?: StadiumMinAggregateInputType
+    _max?: StadiumMaxAggregateInputType
+  }
+
+  export type StadiumGroupByOutputType = {
+    id: string
+    name: string
+    fifaName: string | null
+    city: string
+    country: string | null
+    countryCode: string
+    timezone: string
+    capacity: number
+    coords: string | null
+    region: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: StadiumCountAggregateOutputType | null
+    _avg: StadiumAvgAggregateOutputType | null
+    _sum: StadiumSumAggregateOutputType | null
+    _min: StadiumMinAggregateOutputType | null
+    _max: StadiumMaxAggregateOutputType | null
+  }
+
+  type GetStadiumGroupByPayload<T extends StadiumGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StadiumGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StadiumGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StadiumGroupByOutputType[P]>
+            : GetScalarType<T[P], StadiumGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StadiumSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    fifaName?: boolean
+    city?: boolean
+    country?: boolean
+    countryCode?: boolean
+    timezone?: boolean
+    capacity?: boolean
+    coords?: boolean
+    region?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["stadium"]>
+
+  export type StadiumSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    fifaName?: boolean
+    city?: boolean
+    country?: boolean
+    countryCode?: boolean
+    timezone?: boolean
+    capacity?: boolean
+    coords?: boolean
+    region?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["stadium"]>
+
+  export type StadiumSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    fifaName?: boolean
+    city?: boolean
+    country?: boolean
+    countryCode?: boolean
+    timezone?: boolean
+    capacity?: boolean
+    coords?: boolean
+    region?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["stadium"]>
+
+  export type StadiumSelectScalar = {
+    id?: boolean
+    name?: boolean
+    fifaName?: boolean
+    city?: boolean
+    country?: boolean
+    countryCode?: boolean
+    timezone?: boolean
+    capacity?: boolean
+    coords?: boolean
+    region?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type StadiumOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "fifaName" | "city" | "country" | "countryCode" | "timezone" | "capacity" | "coords" | "region" | "createdAt" | "updatedAt", ExtArgs["result"]["stadium"]>
+
+  export type $StadiumPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Stadium"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      fifaName: string | null
+      city: string
+      country: string | null
+      countryCode: string
+      timezone: string
+      capacity: number
+      coords: string | null
+      region: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["stadium"]>
+    composites: {}
+  }
+
+  type StadiumGetPayload<S extends boolean | null | undefined | StadiumDefaultArgs> = $Result.GetResult<Prisma.$StadiumPayload, S>
+
+  type StadiumCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StadiumFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StadiumCountAggregateInputType | true
+    }
+
+  export interface StadiumDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Stadium'], meta: { name: 'Stadium' } }
+    /**
+     * Find zero or one Stadium that matches the filter.
+     * @param {StadiumFindUniqueArgs} args - Arguments to find a Stadium
+     * @example
+     * // Get one Stadium
+     * const stadium = await prisma.stadium.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StadiumFindUniqueArgs>(args: SelectSubset<T, StadiumFindUniqueArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Stadium that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StadiumFindUniqueOrThrowArgs} args - Arguments to find a Stadium
+     * @example
+     * // Get one Stadium
+     * const stadium = await prisma.stadium.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StadiumFindUniqueOrThrowArgs>(args: SelectSubset<T, StadiumFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Stadium that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumFindFirstArgs} args - Arguments to find a Stadium
+     * @example
+     * // Get one Stadium
+     * const stadium = await prisma.stadium.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StadiumFindFirstArgs>(args?: SelectSubset<T, StadiumFindFirstArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Stadium that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumFindFirstOrThrowArgs} args - Arguments to find a Stadium
+     * @example
+     * // Get one Stadium
+     * const stadium = await prisma.stadium.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StadiumFindFirstOrThrowArgs>(args?: SelectSubset<T, StadiumFindFirstOrThrowArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Stadiums that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Stadiums
+     * const stadiums = await prisma.stadium.findMany()
+     * 
+     * // Get first 10 Stadiums
+     * const stadiums = await prisma.stadium.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const stadiumWithIdOnly = await prisma.stadium.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StadiumFindManyArgs>(args?: SelectSubset<T, StadiumFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Stadium.
+     * @param {StadiumCreateArgs} args - Arguments to create a Stadium.
+     * @example
+     * // Create one Stadium
+     * const Stadium = await prisma.stadium.create({
+     *   data: {
+     *     // ... data to create a Stadium
+     *   }
+     * })
+     * 
+     */
+    create<T extends StadiumCreateArgs>(args: SelectSubset<T, StadiumCreateArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Stadiums.
+     * @param {StadiumCreateManyArgs} args - Arguments to create many Stadiums.
+     * @example
+     * // Create many Stadiums
+     * const stadium = await prisma.stadium.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StadiumCreateManyArgs>(args?: SelectSubset<T, StadiumCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Stadiums and returns the data saved in the database.
+     * @param {StadiumCreateManyAndReturnArgs} args - Arguments to create many Stadiums.
+     * @example
+     * // Create many Stadiums
+     * const stadium = await prisma.stadium.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Stadiums and only return the `id`
+     * const stadiumWithIdOnly = await prisma.stadium.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StadiumCreateManyAndReturnArgs>(args?: SelectSubset<T, StadiumCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Stadium.
+     * @param {StadiumDeleteArgs} args - Arguments to delete one Stadium.
+     * @example
+     * // Delete one Stadium
+     * const Stadium = await prisma.stadium.delete({
+     *   where: {
+     *     // ... filter to delete one Stadium
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StadiumDeleteArgs>(args: SelectSubset<T, StadiumDeleteArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Stadium.
+     * @param {StadiumUpdateArgs} args - Arguments to update one Stadium.
+     * @example
+     * // Update one Stadium
+     * const stadium = await prisma.stadium.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StadiumUpdateArgs>(args: SelectSubset<T, StadiumUpdateArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Stadiums.
+     * @param {StadiumDeleteManyArgs} args - Arguments to filter Stadiums to delete.
+     * @example
+     * // Delete a few Stadiums
+     * const { count } = await prisma.stadium.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StadiumDeleteManyArgs>(args?: SelectSubset<T, StadiumDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Stadiums.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Stadiums
+     * const stadium = await prisma.stadium.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StadiumUpdateManyArgs>(args: SelectSubset<T, StadiumUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Stadiums and returns the data updated in the database.
+     * @param {StadiumUpdateManyAndReturnArgs} args - Arguments to update many Stadiums.
+     * @example
+     * // Update many Stadiums
+     * const stadium = await prisma.stadium.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Stadiums and only return the `id`
+     * const stadiumWithIdOnly = await prisma.stadium.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StadiumUpdateManyAndReturnArgs>(args: SelectSubset<T, StadiumUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Stadium.
+     * @param {StadiumUpsertArgs} args - Arguments to update or create a Stadium.
+     * @example
+     * // Update or create a Stadium
+     * const stadium = await prisma.stadium.upsert({
+     *   create: {
+     *     // ... data to create a Stadium
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Stadium we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StadiumUpsertArgs>(args: SelectSubset<T, StadiumUpsertArgs<ExtArgs>>): Prisma__StadiumClient<$Result.GetResult<Prisma.$StadiumPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Stadiums.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumCountArgs} args - Arguments to filter Stadiums to count.
+     * @example
+     * // Count the number of Stadiums
+     * const count = await prisma.stadium.count({
+     *   where: {
+     *     // ... the filter for the Stadiums we want to count
+     *   }
+     * })
+    **/
+    count<T extends StadiumCountArgs>(
+      args?: Subset<T, StadiumCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StadiumCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Stadium.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StadiumAggregateArgs>(args: Subset<T, StadiumAggregateArgs>): Prisma.PrismaPromise<GetStadiumAggregateType<T>>
+
+    /**
+     * Group by Stadium.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StadiumGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StadiumGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StadiumGroupByArgs['orderBy'] }
+        : { orderBy?: StadiumGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StadiumGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStadiumGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Stadium model
+   */
+  readonly fields: StadiumFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Stadium.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StadiumClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Stadium model
+   */
+  interface StadiumFieldRefs {
+    readonly id: FieldRef<"Stadium", 'String'>
+    readonly name: FieldRef<"Stadium", 'String'>
+    readonly fifaName: FieldRef<"Stadium", 'String'>
+    readonly city: FieldRef<"Stadium", 'String'>
+    readonly country: FieldRef<"Stadium", 'String'>
+    readonly countryCode: FieldRef<"Stadium", 'String'>
+    readonly timezone: FieldRef<"Stadium", 'String'>
+    readonly capacity: FieldRef<"Stadium", 'Int'>
+    readonly coords: FieldRef<"Stadium", 'String'>
+    readonly region: FieldRef<"Stadium", 'String'>
+    readonly createdAt: FieldRef<"Stadium", 'DateTime'>
+    readonly updatedAt: FieldRef<"Stadium", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Stadium findUnique
+   */
+  export type StadiumFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * Filter, which Stadium to fetch.
+     */
+    where: StadiumWhereUniqueInput
+  }
+
+  /**
+   * Stadium findUniqueOrThrow
+   */
+  export type StadiumFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * Filter, which Stadium to fetch.
+     */
+    where: StadiumWhereUniqueInput
+  }
+
+  /**
+   * Stadium findFirst
+   */
+  export type StadiumFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * Filter, which Stadium to fetch.
+     */
+    where?: StadiumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stadiums to fetch.
+     */
+    orderBy?: StadiumOrderByWithRelationInput | StadiumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Stadiums.
+     */
+    cursor?: StadiumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stadiums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stadiums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Stadiums.
+     */
+    distinct?: StadiumScalarFieldEnum | StadiumScalarFieldEnum[]
+  }
+
+  /**
+   * Stadium findFirstOrThrow
+   */
+  export type StadiumFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * Filter, which Stadium to fetch.
+     */
+    where?: StadiumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stadiums to fetch.
+     */
+    orderBy?: StadiumOrderByWithRelationInput | StadiumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Stadiums.
+     */
+    cursor?: StadiumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stadiums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stadiums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Stadiums.
+     */
+    distinct?: StadiumScalarFieldEnum | StadiumScalarFieldEnum[]
+  }
+
+  /**
+   * Stadium findMany
+   */
+  export type StadiumFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * Filter, which Stadiums to fetch.
+     */
+    where?: StadiumWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Stadiums to fetch.
+     */
+    orderBy?: StadiumOrderByWithRelationInput | StadiumOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Stadiums.
+     */
+    cursor?: StadiumWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Stadiums from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Stadiums.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Stadiums.
+     */
+    distinct?: StadiumScalarFieldEnum | StadiumScalarFieldEnum[]
+  }
+
+  /**
+   * Stadium create
+   */
+  export type StadiumCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Stadium.
+     */
+    data: XOR<StadiumCreateInput, StadiumUncheckedCreateInput>
+  }
+
+  /**
+   * Stadium createMany
+   */
+  export type StadiumCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Stadiums.
+     */
+    data: StadiumCreateManyInput | StadiumCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Stadium createManyAndReturn
+   */
+  export type StadiumCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * The data used to create many Stadiums.
+     */
+    data: StadiumCreateManyInput | StadiumCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Stadium update
+   */
+  export type StadiumUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Stadium.
+     */
+    data: XOR<StadiumUpdateInput, StadiumUncheckedUpdateInput>
+    /**
+     * Choose, which Stadium to update.
+     */
+    where: StadiumWhereUniqueInput
+  }
+
+  /**
+   * Stadium updateMany
+   */
+  export type StadiumUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Stadiums.
+     */
+    data: XOR<StadiumUpdateManyMutationInput, StadiumUncheckedUpdateManyInput>
+    /**
+     * Filter which Stadiums to update
+     */
+    where?: StadiumWhereInput
+    /**
+     * Limit how many Stadiums to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Stadium updateManyAndReturn
+   */
+  export type StadiumUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * The data used to update Stadiums.
+     */
+    data: XOR<StadiumUpdateManyMutationInput, StadiumUncheckedUpdateManyInput>
+    /**
+     * Filter which Stadiums to update
+     */
+    where?: StadiumWhereInput
+    /**
+     * Limit how many Stadiums to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Stadium upsert
+   */
+  export type StadiumUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Stadium to update in case it exists.
+     */
+    where: StadiumWhereUniqueInput
+    /**
+     * In case the Stadium found by the `where` argument doesn't exist, create a new Stadium with this data.
+     */
+    create: XOR<StadiumCreateInput, StadiumUncheckedCreateInput>
+    /**
+     * In case the Stadium was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StadiumUpdateInput, StadiumUncheckedUpdateInput>
+  }
+
+  /**
+   * Stadium delete
+   */
+  export type StadiumDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+    /**
+     * Filter which Stadium to delete.
+     */
+    where: StadiumWhereUniqueInput
+  }
+
+  /**
+   * Stadium deleteMany
+   */
+  export type StadiumDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Stadiums to delete
+     */
+    where?: StadiumWhereInput
+    /**
+     * Limit how many Stadiums to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Stadium without action
+   */
+  export type StadiumDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Stadium
+     */
+    select?: StadiumSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Stadium
+     */
+    omit?: StadiumOmit<ExtArgs> | null
+  }
+
 
   /**
    * Model Team
@@ -5656,6 +6872,24 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const StadiumScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    fifaName: 'fifaName',
+    city: 'city',
+    country: 'country',
+    countryCode: 'countryCode',
+    timezone: 'timezone',
+    capacity: 'capacity',
+    coords: 'coords',
+    region: 'region',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type StadiumScalarFieldEnum = (typeof StadiumScalarFieldEnum)[keyof typeof StadiumScalarFieldEnum]
+
+
   export const TeamScalarFieldEnum: {
     id: 'id',
     fifaCode: 'fifaCode',
@@ -5746,6 +6980,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Continent'
    */
   export type EnumContinentFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Continent'>
@@ -5774,34 +7036,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
-   */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -5817,6 +7051,95 @@ export namespace Prisma {
    * Deep Input Types
    */
 
+
+  export type StadiumWhereInput = {
+    AND?: StadiumWhereInput | StadiumWhereInput[]
+    OR?: StadiumWhereInput[]
+    NOT?: StadiumWhereInput | StadiumWhereInput[]
+    id?: StringFilter<"Stadium"> | string
+    name?: StringFilter<"Stadium"> | string
+    fifaName?: StringNullableFilter<"Stadium"> | string | null
+    city?: StringFilter<"Stadium"> | string
+    country?: StringNullableFilter<"Stadium"> | string | null
+    countryCode?: StringFilter<"Stadium"> | string
+    timezone?: StringFilter<"Stadium"> | string
+    capacity?: IntFilter<"Stadium"> | number
+    coords?: StringNullableFilter<"Stadium"> | string | null
+    region?: StringNullableFilter<"Stadium"> | string | null
+    createdAt?: DateTimeFilter<"Stadium"> | Date | string
+    updatedAt?: DateTimeFilter<"Stadium"> | Date | string
+  }
+
+  export type StadiumOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    fifaName?: SortOrderInput | SortOrder
+    city?: SortOrder
+    country?: SortOrderInput | SortOrder
+    countryCode?: SortOrder
+    timezone?: SortOrder
+    capacity?: SortOrder
+    coords?: SortOrderInput | SortOrder
+    region?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StadiumWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: StadiumWhereInput | StadiumWhereInput[]
+    OR?: StadiumWhereInput[]
+    NOT?: StadiumWhereInput | StadiumWhereInput[]
+    fifaName?: StringNullableFilter<"Stadium"> | string | null
+    city?: StringFilter<"Stadium"> | string
+    country?: StringNullableFilter<"Stadium"> | string | null
+    countryCode?: StringFilter<"Stadium"> | string
+    timezone?: StringFilter<"Stadium"> | string
+    capacity?: IntFilter<"Stadium"> | number
+    coords?: StringNullableFilter<"Stadium"> | string | null
+    region?: StringNullableFilter<"Stadium"> | string | null
+    createdAt?: DateTimeFilter<"Stadium"> | Date | string
+    updatedAt?: DateTimeFilter<"Stadium"> | Date | string
+  }, "id" | "name">
+
+  export type StadiumOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    fifaName?: SortOrderInput | SortOrder
+    city?: SortOrder
+    country?: SortOrderInput | SortOrder
+    countryCode?: SortOrder
+    timezone?: SortOrder
+    capacity?: SortOrder
+    coords?: SortOrderInput | SortOrder
+    region?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: StadiumCountOrderByAggregateInput
+    _avg?: StadiumAvgOrderByAggregateInput
+    _max?: StadiumMaxOrderByAggregateInput
+    _min?: StadiumMinOrderByAggregateInput
+    _sum?: StadiumSumOrderByAggregateInput
+  }
+
+  export type StadiumScalarWhereWithAggregatesInput = {
+    AND?: StadiumScalarWhereWithAggregatesInput | StadiumScalarWhereWithAggregatesInput[]
+    OR?: StadiumScalarWhereWithAggregatesInput[]
+    NOT?: StadiumScalarWhereWithAggregatesInput | StadiumScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Stadium"> | string
+    name?: StringWithAggregatesFilter<"Stadium"> | string
+    fifaName?: StringNullableWithAggregatesFilter<"Stadium"> | string | null
+    city?: StringWithAggregatesFilter<"Stadium"> | string
+    country?: StringNullableWithAggregatesFilter<"Stadium"> | string | null
+    countryCode?: StringWithAggregatesFilter<"Stadium"> | string
+    timezone?: StringWithAggregatesFilter<"Stadium"> | string
+    capacity?: IntWithAggregatesFilter<"Stadium"> | number
+    coords?: StringNullableWithAggregatesFilter<"Stadium"> | string | null
+    region?: StringNullableWithAggregatesFilter<"Stadium"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Stadium"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Stadium"> | Date | string
+  }
 
   export type TeamWhereInput = {
     AND?: TeamWhereInput | TeamWhereInput[]
@@ -6057,6 +7380,111 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"GroupTeam"> | string
     groupId?: StringWithAggregatesFilter<"GroupTeam"> | string
     teamId?: StringWithAggregatesFilter<"GroupTeam"> | string
+  }
+
+  export type StadiumCreateInput = {
+    id?: string
+    name: string
+    fifaName?: string | null
+    city: string
+    country?: string | null
+    countryCode: string
+    timezone: string
+    capacity: number
+    coords?: string | null
+    region?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StadiumUncheckedCreateInput = {
+    id?: string
+    name: string
+    fifaName?: string | null
+    city: string
+    country?: string | null
+    countryCode: string
+    timezone: string
+    capacity: number
+    coords?: string | null
+    region?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StadiumUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    fifaName?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    coords?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StadiumUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    fifaName?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    coords?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StadiumCreateManyInput = {
+    id?: string
+    name: string
+    fifaName?: string | null
+    city: string
+    country?: string | null
+    countryCode: string
+    timezone: string
+    capacity: number
+    coords?: string | null
+    region?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type StadiumUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    fifaName?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    coords?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StadiumUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    fifaName?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: StringFieldUpdateOperationsInput | string
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    countryCode?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    capacity?: IntFieldUpdateOperationsInput | number
+    coords?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TeamCreateInput = {
@@ -6321,20 +7749,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type EnumContinentFilter<$PrismaModel = never> = {
-    equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
-    in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
-    not?: NestedEnumContinentFilter<$PrismaModel> | $Enums.Continent
-  }
-
-  export type EnumConfederationFilter<$PrismaModel = never> = {
-    equals?: $Enums.Confederation | EnumConfederationFieldRefInput<$PrismaModel>
-    in?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
-    not?: NestedEnumConfederationFilter<$PrismaModel> | $Enums.Confederation
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6350,6 +7764,17 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -6361,15 +7786,148 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type StadiumCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    fifaName?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    countryCode?: SortOrder
+    timezone?: SortOrder
+    capacity?: SortOrder
+    coords?: SortOrder
+    region?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StadiumAvgOrderByAggregateInput = {
+    capacity?: SortOrder
+  }
+
+  export type StadiumMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    fifaName?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    countryCode?: SortOrder
+    timezone?: SortOrder
+    capacity?: SortOrder
+    coords?: SortOrder
+    region?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StadiumMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    fifaName?: SortOrder
+    city?: SortOrder
+    country?: SortOrder
+    countryCode?: SortOrder
+    timezone?: SortOrder
+    capacity?: SortOrder
+    coords?: SortOrder
+    region?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StadiumSumOrderByAggregateInput = {
+    capacity?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumContinentFilter<$PrismaModel = never> = {
+    equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
+    in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
+    not?: NestedEnumContinentFilter<$PrismaModel> | $Enums.Continent
+  }
+
+  export type EnumConfederationFilter<$PrismaModel = never> = {
+    equals?: $Enums.Confederation | EnumConfederationFieldRefInput<$PrismaModel>
+    in?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfederationFilter<$PrismaModel> | $Enums.Confederation
+  }
+
   export type GroupTeamListRelationFilter = {
     every?: GroupTeamWhereInput
     some?: GroupTeamWhereInput
     none?: GroupTeamWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type GroupTeamOrderByRelationAggregateInput = {
@@ -6412,24 +7970,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type EnumContinentWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
     in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
@@ -6448,49 +7988,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumConfederationFilter<$PrismaModel>
     _max?: NestedEnumConfederationFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type GroupListRelationFilter = {
@@ -6538,22 +8035,6 @@ export namespace Prisma {
 
   export type CompetitionSumOrderByAggregateInput = {
     edition?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type CompetitionScalarRelationFilter = {
@@ -6623,6 +8104,26 @@ export namespace Prisma {
     teamId?: SortOrder
   }
 
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type GroupTeamCreateNestedManyWithoutTeamInput = {
     create?: XOR<GroupTeamCreateWithoutTeamInput, GroupTeamUncheckedCreateWithoutTeamInput> | GroupTeamCreateWithoutTeamInput[] | GroupTeamUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: GroupTeamCreateOrConnectWithoutTeamInput | GroupTeamCreateOrConnectWithoutTeamInput[]
@@ -6637,24 +8138,12 @@ export namespace Prisma {
     connect?: GroupTeamWhereUniqueInput | GroupTeamWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type EnumContinentFieldUpdateOperationsInput = {
     set?: $Enums.Continent
   }
 
   export type EnumConfederationFieldUpdateOperationsInput = {
     set?: $Enums.Confederation
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
   }
 
   export type GroupTeamUpdateManyWithoutTeamNestedInput = {
@@ -6697,14 +8186,6 @@ export namespace Prisma {
     connectOrCreate?: GroupCreateOrConnectWithoutCompetitionInput | GroupCreateOrConnectWithoutCompetitionInput[]
     createMany?: GroupCreateManyCompetitionInputEnvelope
     connect?: GroupWhereUniqueInput | GroupWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type GroupUpdateManyWithoutCompetitionNestedInput = {
@@ -6833,20 +8314,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedEnumContinentFilter<$PrismaModel = never> = {
-    equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
-    in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
-    not?: NestedEnumContinentFilter<$PrismaModel> | $Enums.Continent
-  }
-
-  export type NestedEnumConfederationFilter<$PrismaModel = never> = {
-    equals?: $Enums.Confederation | EnumConfederationFieldRefInput<$PrismaModel>
-    in?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
-    not?: NestedEnumConfederationFilter<$PrismaModel> | $Enums.Confederation
-  }
-
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6859,6 +8326,17 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -6889,37 +8367,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type NestedEnumContinentWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
-    in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
-    not?: NestedEnumContinentWithAggregatesFilter<$PrismaModel> | $Enums.Continent
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumContinentFilter<$PrismaModel>
-    _max?: NestedEnumContinentFilter<$PrismaModel>
-  }
-
-  export type NestedEnumConfederationWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Confederation | EnumConfederationFieldRefInput<$PrismaModel>
-    in?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
-    not?: NestedEnumConfederationWithAggregatesFilter<$PrismaModel> | $Enums.Confederation
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumConfederationFilter<$PrismaModel>
-    _max?: NestedEnumConfederationFilter<$PrismaModel>
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -6948,20 +8395,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -6987,6 +8420,54 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumContinentFilter<$PrismaModel = never> = {
+    equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
+    in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
+    not?: NestedEnumContinentFilter<$PrismaModel> | $Enums.Continent
+  }
+
+  export type NestedEnumConfederationFilter<$PrismaModel = never> = {
+    equals?: $Enums.Confederation | EnumConfederationFieldRefInput<$PrismaModel>
+    in?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfederationFilter<$PrismaModel> | $Enums.Confederation
+  }
+
+  export type NestedEnumContinentWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Continent | EnumContinentFieldRefInput<$PrismaModel>
+    in?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Continent[] | ListEnumContinentFieldRefInput<$PrismaModel>
+    not?: NestedEnumContinentWithAggregatesFilter<$PrismaModel> | $Enums.Continent
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumContinentFilter<$PrismaModel>
+    _max?: NestedEnumContinentFilter<$PrismaModel>
+  }
+
+  export type NestedEnumConfederationWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Confederation | EnumConfederationFieldRefInput<$PrismaModel>
+    in?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Confederation[] | ListEnumConfederationFieldRefInput<$PrismaModel>
+    not?: NestedEnumConfederationWithAggregatesFilter<$PrismaModel> | $Enums.Confederation
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumConfederationFilter<$PrismaModel>
+    _max?: NestedEnumConfederationFilter<$PrismaModel>
   }
 
   export type GroupTeamCreateWithoutTeamInput = {

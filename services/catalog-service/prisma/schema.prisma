@@ -9,6 +9,24 @@ datasource db {
   schemas  = ["catalog"]
 }
 
+model Stadium {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  fifaName    String?
+  city        String
+  country     String?
+  countryCode String
+  timezone    String
+  capacity    Int
+  coords      String?
+  region      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("stadiums")
+  @@schema("catalog")
+}
+
 model Team {
   id            String        @id @default(cuid())
   fifaCode      String        @unique

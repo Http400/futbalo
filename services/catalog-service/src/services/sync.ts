@@ -1,5 +1,9 @@
 import { prisma } from '../db.js';
 import { fetchOpenfootball, fetchRezarahiminia } from '../lib/fetchTeams.js';
+import {
+  fetchOpenfootballStadiums,
+  fetchRezarahiminiaStadiums,
+} from '../lib/fetchStadiums.js';
 import type { Continent, Confederation } from '../generated/prisma/index.js';
 
 const continentMap: Record<string, Continent> = {
@@ -69,5 +73,60 @@ export async function syncTeams(): Promise<void> {
     console.log(`Teams synced: ${synced}`);
   } catch (err) {
     console.error('Failed to sync teams:', err);
+  }
+}
+
+function normalizeName(name: string): string {
+  return name.toLowerCase().trim();
+}
+
+export async function syncStadiums(): Promise<void> {
+  try {
+    const [source1, source2] = await Promise.all([
+      fetchOpenfootballStadiums(),
+      fetchRezarahiminiaStadiums(),
+    ]);
+
+    let synced = 0;
+
+    for (const stadium of source1) {
+      const normalizedS1 = normalizeName(stadium.name);
+
+      const s2 = source2.find((s) => {
+        const normalizedS2 = normalizeName(s.name_en);
+        return normalizedS2 === normalizedS1 || normalizedS2.includes(normalizedS1);
+      });
+
+      await prisma.stadium.upsert({
+        where: { name: stadium.name },
+        update: {
+          fifaName: s2?.fifa_name ?? null,
+          city: stadium.city,
+          country: s2?.country_en ?? null,
+          countryCode: stadium.cc.toLowerCase(),
+          timezone: stadium.timezone,
+          capacity: stadium.capacity,
+          coords: stadium.coords ?? null,
+          region: s2?.region ?? null,
+        },
+        create: {
+          name: stadium.name,
+          fifaName: s2?.fifa_name ?? null,
+          city: stadium.city,
+          country: s2?.country_en ?? null,
+          countryCode: stadium.cc.toLowerCase(),
+          timezone: stadium.timezone,
+          capacity: stadium.capacity,
+          coords: stadium.coords ?? null,
+          region: s2?.region ?? null,
+        },
+      });
+
+      synced++;
+    }
+
+    console.log(`Stadiums synced: ${synced}`);
+  } catch (err) {
+    console.error('Failed to sync stadiums:', err);
   }
 }

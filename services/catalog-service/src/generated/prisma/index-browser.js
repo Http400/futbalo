@@ -120,6 +120,21 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.StadiumScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  fifaName: 'fifaName',
+  city: 'city',
+  country: 'country',
+  countryCode: 'countryCode',
+  timezone: 'timezone',
+  capacity: 'capacity',
+  coords: 'coords',
+  region: 'region',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.TeamScalarFieldEnum = {
   id: 'id',
   fifaCode: 'fifaCode',
@@ -187,6 +202,7 @@ exports.Confederation = exports.$Enums.Confederation = {
 };
 
 exports.Prisma.ModelName = {
+  Stadium: 'Stadium',
   Team: 'Team',
   Competition: 'Competition',
   Group: 'Group',
