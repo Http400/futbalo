@@ -45,3 +45,29 @@ enum Confederation {
 
   @@schema("catalog")
 }
+
+model Competition {
+  id        String   @id @default(cuid())
+  name      String
+  edition   Int
+  groups    Group[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, edition])
+  @@map("competitions")
+  @@schema("catalog")
+}
+
+model Group {
+  id            String      @id @default(cuid())
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id])
+  name          String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([competitionId, name])
+  @@map("groups")
+  @@schema("catalog")
+}

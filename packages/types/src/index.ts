@@ -21,6 +21,22 @@ export interface Team {
   updatedAt: Date;
 }
 
+export interface Competition {
+  id: string;
+  name: string;
+  edition: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Group {
+  id: string;
+  competitionId: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Shared user types
 export interface User {
   id: string;

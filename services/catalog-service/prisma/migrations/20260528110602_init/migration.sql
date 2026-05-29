@@ -1,0 +1,2 @@
+-- This migration was applied to the database before this file was committed.
+-- It is recorded here as a placeholder so Prisma can reconcile migration history.
