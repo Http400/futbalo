@@ -19,6 +19,7 @@ model Team {
   flagIcon      String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  groupTeams    GroupTeam[]
 
   @@map("teams")
   @@schema("catalog")
@@ -66,8 +67,21 @@ model Group {
   name          String
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  groupTeams    GroupTeam[]
 
   @@unique([competitionId, name])
   @@map("groups")
+  @@schema("catalog")
+}
+
+model GroupTeam {
+  id      String @id @default(cuid())
+  groupId String
+  group   Group  @relation(fields: [groupId], references: [id])
+  teamId  String
+  team    Team   @relation(fields: [teamId], references: [id])
+
+  @@unique([groupId, teamId])
+  @@map("group_teams")
   @@schema("catalog")
 }

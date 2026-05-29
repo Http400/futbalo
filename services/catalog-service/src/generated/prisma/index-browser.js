@@ -148,6 +148,12 @@ exports.Prisma.GroupScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.GroupTeamScalarFieldEnum = {
+  id: 'id',
+  groupId: 'groupId',
+  teamId: 'teamId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -183,7 +189,8 @@ exports.Confederation = exports.$Enums.Confederation = {
 exports.Prisma.ModelName = {
   Team: 'Team',
   Competition: 'Competition',
-  Group: 'Group'
+  Group: 'Group',
+  GroupTeam: 'GroupTeam'
 };
 
 /**

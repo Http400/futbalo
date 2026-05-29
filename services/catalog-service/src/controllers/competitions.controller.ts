@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express';
-import type { ApiResponse, ApiError, Competition, Group } from '@futbalo/types';
+import type { ApiResponse, ApiError, Competition, GroupWithTeams } from '@futbalo/types';
 import * as competitionsService from '../services/competitions.js';
 
 export const getCompetitions: RequestHandler = async (_req, res) => {
@@ -38,22 +38,5 @@ export const getGroupsByCompetitionId: RequestHandler = async (req, res) => {
     return;
   }
 
-  res.json({ data: groups } satisfies ApiResponse<Group[]>);
-};
-
-export const getGroupById: RequestHandler = async (req, res) => {
-  const raw = req.params['id'];
-  const id = Array.isArray(raw) ? (raw[0] ?? '') : (raw ?? '');
-  const group = await competitionsService.getGroupById(id);
-
-  if (!group) {
-    res.status(404).json({
-      message: 'Group not found',
-      code: 'CATALOG_003',
-      statusCode: 404,
-    } satisfies ApiError);
-    return;
-  }
-
-  res.json({ data: group } satisfies ApiResponse<Group>);
+  res.json({ data: groups } satisfies ApiResponse<GroupWithTeams[]>);
 };

@@ -37,6 +37,20 @@ export interface Group {
   updatedAt: Date;
 }
 
+export interface TeamSummary {
+  id: string;
+  fifaCode: string;
+  name: string;
+  continent: Continent;
+  confederation: Confederation;
+  flagUrl: string | null;
+  flagIcon: string | null;
+}
+
+export interface GroupWithTeams extends Group {
+  teams: TeamSummary[];
+}
+
 // Shared user types
 export interface User {
   id: string;
