@@ -8,3 +8,4 @@ coverage
 *.log
 .DS_Store
 services/auth-service/src/generated
+services/catalog-service/src/generated

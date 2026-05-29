@@ -1,0 +1,47 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+  output        = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["catalog"]
+}
+
+model Team {
+  id            String        @id @default(cuid())
+  fifaCode      String        @unique
+  name          String
+  continent     Continent
+  confederation Confederation
+  flagUrl       String?
+  flagIcon      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("teams")
+  @@schema("catalog")
+}
+
+enum Continent {
+  AFRICA
+  ASIA
+  EUROPE
+  NORTH_AMERICA
+  OCEANIA
+  SOUTH_AMERICA
+
+  @@schema("catalog")
+}
+
+enum Confederation {
+  AFC
+  CAF
+  CONCACAF
+  CONMEBOL
+  OFC
+  UEFA
+
+  @@schema("catalog")
+}

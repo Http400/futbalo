@@ -1,3 +1,26 @@
+// Catalog types
+export type Continent =
+  | 'AFRICA'
+  | 'ASIA'
+  | 'EUROPE'
+  | 'NORTH_AMERICA'
+  | 'OCEANIA'
+  | 'SOUTH_AMERICA';
+
+export type Confederation = 'AFC' | 'CAF' | 'CONCACAF' | 'CONMEBOL' | 'OFC' | 'UEFA';
+
+export interface Team {
+  id: string;
+  fifaCode: string;
+  name: string;
+  continent: Continent;
+  confederation: Confederation;
+  flagUrl: string | null;
+  flagIcon: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Shared user types
 export interface User {
   id: string;

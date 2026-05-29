@@ -13,6 +13,7 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY apps/web-app/package.json ./apps/web-app/
 COPY apps/admin-app/package.json ./apps/admin-app/
 COPY services/auth-service/package.json ./services/auth-service/
+COPY services/catalog-service/package.json ./services/catalog-service/
 COPY packages/types/package.json ./packages/types/
 COPY packages/ui/package.json ./packages/ui/
 
