@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import type { ApiError } from '@futbalo/types';
-import { verifyAccess, type JwtAccessPayload } from '../lib/jwt.js';
+import { verifyAccess, type JwtAccessPayload } from '../jwt.js';
 
 export interface AuthLocals {
   user: JwtAccessPayload;
@@ -15,7 +15,7 @@ export function requireAuth(req: Request, res: Response<unknown, AuthLocals>, ne
       message: 'No token provided',
       code: 'AUTH_001',
       statusCode: 401,
-    });
+    } satisfies ApiError);
     return;
   }
 
@@ -28,6 +28,6 @@ export function requireAuth(req: Request, res: Response<unknown, AuthLocals>, ne
       message: 'Invalid or expired token',
       code: 'AUTH_002',
       statusCode: 401,
-    });
+    } satisfies ApiError);
   }
 }

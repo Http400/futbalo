@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
 import { requireAuth, type AuthLocals } from './auth.js';
 
-vi.mock('../lib/jwt.js', () => ({
+vi.mock('../jwt.js', () => ({
   verifyAccess: vi.fn(),
 }));
 
-import { verifyAccess } from '../lib/jwt.js';
+import { verifyAccess } from '../jwt.js';
 const mockVerifyAccess = vi.mocked(verifyAccess);
 
 function makeReq(authorization?: string): Request {

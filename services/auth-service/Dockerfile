@@ -16,6 +16,7 @@ COPY services/auth-service/package.json ./services/auth-service/
 COPY services/catalog-service/package.json ./services/catalog-service/
 COPY packages/types/package.json ./packages/types/
 COPY packages/ui/package.json ./packages/ui/
+COPY packages/utils/package.json ./packages/utils/
 
 RUN pnpm install --frozen-lockfile
 

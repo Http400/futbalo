@@ -3,6 +3,10 @@ import { app } from './app.js';
 import { syncTeams, syncStadiums } from './services/sync.js';
 import { syncMatches } from './services/syncMatches.js';
 
+if (!process.env['JWT_SECRET']) {
+  throw new Error('Missing required environment variable: JWT_SECRET');
+}
+
 const PORT = process.env['PORT'] ?? 4001;
 
 async function main() {
