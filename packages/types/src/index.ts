@@ -76,6 +76,32 @@ export interface Stage {
   updatedAt: Date;
 }
 
+export type MatchStatus = 'SCHEDULED' | 'LIVE' | 'FINISHED' | 'CANCELLED' | 'POSTPONED';
+export type MatchResultType = 'REGULAR_TIME' | 'EXTRA_TIME' | 'PENALTIES';
+
+export interface Match {
+  id: string;
+  sourceId: string | null;
+  competitionId: string;
+  stageId: string;
+  stadiumId: string;
+  groupId: string | null;
+  homeTeamId: string | null;
+  awayTeamId: string | null;
+  homePlaceholder: string | null;
+  awayPlaceholder: string | null;
+  kickoffAt: Date | null;
+  status: MatchStatus;
+  homeScore: number | null;
+  awayScore: number | null;
+  homePenaltyScore: number | null;
+  awayPenaltyScore: number | null;
+  winnerTeamId: string | null;
+  resultType: MatchResultType | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Shared user types
 export interface User {
   id: string;

@@ -22,6 +22,7 @@ model Stadium {
   region      String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  matches     Match[]
 
   @@map("stadiums")
   @@schema("catalog")
@@ -38,6 +39,9 @@ model Team {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   groupTeams    GroupTeam[]
+  homeMatches   Match[]       @relation("homeMatches")
+  awayMatches   Match[]       @relation("awayMatches")
+  wonMatches    Match[]       @relation("wonMatches")
 
   @@map("teams")
   @@schema("catalog")
@@ -71,6 +75,7 @@ model Competition {
   edition   Int
   groups    Group[]
   stages    Stage[]
+  matches   Match[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -87,6 +92,7 @@ model Group {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   groupTeams    GroupTeam[]
+  matches       Match[]
 
   @@unique([competitionId, name])
   @@map("groups")
@@ -114,8 +120,60 @@ model Stage {
   competition   Competition @relation(fields: [competitionId], references: [id])
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  matches       Match[]
 
   @@unique([competitionId, code])
   @@map("stages")
+  @@schema("catalog")
+}
+
+model Match {
+  id               String           @id @default(cuid())
+  sourceId         String?          @unique
+  competitionId    String
+  competition      Competition      @relation(fields: [competitionId], references: [id])
+  stageId          String
+  stage            Stage            @relation(fields: [stageId], references: [id])
+  stadiumId        String
+  stadium          Stadium          @relation(fields: [stadiumId], references: [id])
+  groupId          String?
+  group            Group?           @relation(fields: [groupId], references: [id])
+  homeTeamId       String?
+  homeTeam         Team?            @relation("homeMatches", fields: [homeTeamId], references: [id])
+  awayTeamId       String?
+  awayTeam         Team?            @relation("awayMatches", fields: [awayTeamId], references: [id])
+  homePlaceholder  String?
+  awayPlaceholder  String?
+  kickoffAt        DateTime?
+  status           MatchStatus      @default(SCHEDULED)
+  homeScore        Int?
+  awayScore        Int?
+  homePenaltyScore Int?
+  awayPenaltyScore Int?
+  winnerTeamId     String?
+  winnerTeam       Team?            @relation("wonMatches", fields: [winnerTeamId], references: [id])
+  resultType       MatchResultType?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@map("matches")
+  @@schema("catalog")
+}
+
+enum MatchStatus {
+  SCHEDULED
+  LIVE
+  FINISHED
+  CANCELLED
+  POSTPONED
+
+  @@schema("catalog")
+}
+
+enum MatchResultType {
+  REGULAR_TIME
+  EXTRA_TIME
+  PENALTIES
+
   @@schema("catalog")
 }

@@ -179,6 +179,29 @@ exports.Prisma.StageScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MatchScalarFieldEnum = {
+  id: 'id',
+  sourceId: 'sourceId',
+  competitionId: 'competitionId',
+  stageId: 'stageId',
+  stadiumId: 'stadiumId',
+  groupId: 'groupId',
+  homeTeamId: 'homeTeamId',
+  awayTeamId: 'awayTeamId',
+  homePlaceholder: 'homePlaceholder',
+  awayPlaceholder: 'awayPlaceholder',
+  kickoffAt: 'kickoffAt',
+  status: 'status',
+  homeScore: 'homeScore',
+  awayScore: 'awayScore',
+  homePenaltyScore: 'homePenaltyScore',
+  awayPenaltyScore: 'awayPenaltyScore',
+  winnerTeamId: 'winnerTeamId',
+  resultType: 'resultType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -211,13 +234,28 @@ exports.Confederation = exports.$Enums.Confederation = {
   UEFA: 'UEFA'
 };
 
+exports.MatchStatus = exports.$Enums.MatchStatus = {
+  SCHEDULED: 'SCHEDULED',
+  LIVE: 'LIVE',
+  FINISHED: 'FINISHED',
+  CANCELLED: 'CANCELLED',
+  POSTPONED: 'POSTPONED'
+};
+
+exports.MatchResultType = exports.$Enums.MatchResultType = {
+  REGULAR_TIME: 'REGULAR_TIME',
+  EXTRA_TIME: 'EXTRA_TIME',
+  PENALTIES: 'PENALTIES'
+};
+
 exports.Prisma.ModelName = {
   Stadium: 'Stadium',
   Team: 'Team',
   Competition: 'Competition',
   Group: 'Group',
   GroupTeam: 'GroupTeam',
-  Stage: 'Stage'
+  Stage: 'Stage',
+  Match: 'Match'
 };
 
 /**
