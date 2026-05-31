@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AuthForm, type SignInData, type SignUpData } from '@futbalo/ui';
 import { useAppSelector } from './store/hooks';
 import { useLoginMutation, useRegisterMutation } from './store/api/authApi';
+import { GlobeWrapper } from './components/GlobeWrapper';
 
 function App() {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
@@ -25,31 +26,39 @@ function App() {
     }
   }
 
-  if (isAuthenticated) {
+  if (true) {
     return (
-      <main>
-        <h1>Welcome to Futbalo</h1>
+      <main style={{
+        width: '100%',
+        height: '100vh',
+        overflow: 'hidden',
+        background: '#ffffff',
+        position: 'fixed',
+        // inset: 0,
+        fontFamily: 'sans-serif',
+      }}>
+        <GlobeWrapper />
       </main>
     );
   }
 
-  return (
-    <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 64 }}>
-      <AuthForm
-        mode={mode}
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-        {...(errorMessage !== undefined && { error: errorMessage })}
-      />
-      <button
-        type="button"
-        onClick={() => setMode(mode === 'signIn' ? 'signUp' : 'signIn')}
-        style={{ marginTop: 16, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
-      >
-        {mode === 'signIn' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
-      </button>
-    </main>
-  );
+  // return (
+  //   <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 64 }}>
+  //     <AuthForm
+  //       mode={mode}
+  //       onSubmit={handleSubmit}
+  //       isLoading={isLoading}
+  //       {...(errorMessage !== undefined && { error: errorMessage })}
+  //     />
+  //     <button
+  //       type="button"
+  //       onClick={() => setMode(mode === 'signIn' ? 'signUp' : 'signIn')}
+  //       style={{ marginTop: 16, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+  //     >
+  //       {mode === 'signIn' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
+  //     </button>
+  //   </main>
+  // );
 }
 
 export default App;
