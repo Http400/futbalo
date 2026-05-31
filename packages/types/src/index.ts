@@ -66,6 +66,16 @@ export interface GroupWithTeams extends Group {
   teams: TeamSummary[];
 }
 
+export interface Stage {
+  id: string;
+  code: string;
+  name: string;
+  sortOrder: number;
+  competitionId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Shared user types
 export interface User {
   id: string;

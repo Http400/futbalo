@@ -70,6 +70,7 @@ model Competition {
   name      String
   edition   Int
   groups    Group[]
+  stages    Stage[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -101,5 +102,20 @@ model GroupTeam {
 
   @@unique([groupId, teamId])
   @@map("group_teams")
+  @@schema("catalog")
+}
+
+model Stage {
+  id            String      @id @default(cuid())
+  code          String
+  name          String
+  sortOrder     Int
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([competitionId, code])
+  @@map("stages")
   @@schema("catalog")
 }

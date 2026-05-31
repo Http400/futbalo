@@ -169,6 +169,16 @@ exports.Prisma.GroupTeamScalarFieldEnum = {
   teamId: 'teamId'
 };
 
+exports.Prisma.StageScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  sortOrder: 'sortOrder',
+  competitionId: 'competitionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -206,7 +216,8 @@ exports.Prisma.ModelName = {
   Team: 'Team',
   Competition: 'Competition',
   Group: 'Group',
-  GroupTeam: 'GroupTeam'
+  GroupTeam: 'GroupTeam',
+  Stage: 'Stage'
 };
 
 /**

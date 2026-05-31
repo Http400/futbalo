@@ -4,6 +4,7 @@ import { teamsRouter } from './routes/teams.js';
 import { competitionsRouter } from './routes/competitions.js';
 import { groupsRouter } from './routes/groups.js';
 import { stadiumsRouter } from './routes/stadiums.js';
+import { stagesRouter } from './routes/stages.js';
 
 export const app: Express = express();
 
@@ -18,3 +19,4 @@ app.use(teamsRouter);
 app.use(competitionsRouter);
 app.use(groupsRouter);
 app.use(stadiumsRouter);
+app.use(stagesRouter);
