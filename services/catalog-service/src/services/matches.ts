@@ -1,6 +1,8 @@
 import { prisma } from '../db.js';
 import { Prisma } from '../generated/prisma/index.js';
 import type { MatchStatus, MatchResultType } from '../generated/prisma/index.js';
+import type { PaginationParams } from '@futbalo/types';
+import { PAGINATION_DEFAULTS } from '../lib/pagination.js';
 
 export type MatchFilters = {
   competitionId?: string;
@@ -10,7 +12,10 @@ export type MatchFilters = {
   status?: MatchStatus;
 };
 
-export async function getAllMatches(filters: MatchFilters = {}) {
+export async function getAllMatches(
+  filters: MatchFilters = {},
+  pagination: PaginationParams = { page: PAGINATION_DEFAULTS.page, limit: PAGINATION_DEFAULTS.limit },
+) {
   const where: Prisma.MatchWhereInput = {};
 
   if (filters.competitionId) where.competitionId = filters.competitionId;
@@ -21,7 +26,14 @@ export async function getAllMatches(filters: MatchFilters = {}) {
     where.OR = [{ homeTeamId: filters.teamId }, { awayTeamId: filters.teamId }];
   }
 
-  return prisma.match.findMany({ where, orderBy: { kickoffAt: 'asc' } });
+  const skip = (pagination.page - 1) * pagination.limit;
+
+  const [total, data] = await Promise.all([
+    prisma.match.count({ where }),
+    prisma.match.findMany({ where, skip, take: pagination.limit, orderBy: { kickoffAt: 'asc' } }),
+  ]);
+
+  return { data, total };
 }
 
 export async function getMatchById(id: string) {

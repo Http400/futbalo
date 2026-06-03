@@ -1,7 +1,8 @@
 import type { RequestHandler } from 'express';
-import type { ApiResponse, ApiError, Match } from '@futbalo/types';
+import type { ApiResponse, ApiError, Match, PaginatedResponse } from '@futbalo/types';
 import type { MatchStatus, MatchResultType } from '../generated/prisma/index.js';
 import * as matchesService from '../services/matches.js';
+import { parsePagination, buildPaginatedResponse } from '../lib/pagination.js';
 
 const VALID_STATUSES: MatchStatus[] = ['SCHEDULED', 'LIVE', 'FINISHED', 'CANCELLED', 'POSTPONED'];
 const VALID_RESULT_TYPES: MatchResultType[] = ['REGULAR_TIME', 'EXTRA_TIME', 'PENALTIES'];
@@ -40,8 +41,18 @@ export const getMatches: RequestHandler = async (req, res) => {
     filters.status = status;
   }
 
-  const matches = await matchesService.getAllMatches(filters);
-  res.json({ data: matches } satisfies ApiResponse<Match[]>);
+  const pagination = parsePagination(req.query as Record<string, unknown>);
+  if (!pagination.ok) {
+    res.status(400).json({
+      message: pagination.error,
+      code: 'CATALOG_400',
+      statusCode: 400,
+    } satisfies ApiError);
+    return;
+  }
+
+  const { data, total } = await matchesService.getAllMatches(filters, pagination.params);
+  res.json(buildPaginatedResponse(data, total, pagination.params) satisfies PaginatedResponse<Match>);
 };
 
 export const getMatchById: RequestHandler = async (req, res) => {
