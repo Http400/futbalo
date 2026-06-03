@@ -15,3 +15,6 @@ export type { MatchListProps } from './components/MatchList';
 
 export { MatchCard } from './components/MatchCard';
 export type { MatchCardProps, MatchTeam, MatchPrediction, MatchStatus } from './components/MatchCard';
+
+export { MatchCardList } from './components/MatchCardList';
+export type { MatchCardListProps } from './components/MatchCardList';

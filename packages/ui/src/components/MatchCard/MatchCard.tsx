@@ -50,27 +50,24 @@ export function MatchCard({
     return (
         <Card variant="outlined" sx={{ borderRadius: 3 }}>
             <CardContent sx={{ pb: 0 }}>
-                {/* <Box sx={{ display: "flex", alignItems: "stretch", gap: 0 }}> */}
                 <Stack direction="row" spacing={2}>
-
                     <Stack spacing={2}>
-                        <div>
-
-                            <Chip
-                                label={STATUS_LABELS[status]}
-                                variant="outlined"
-                                color={STATUS_COLORS[status] as "success" | "error" | "default"}
-                                size="small"
-                                sx={{ fontWeight: 600, borderRadius: 5, px: 0.5 }}
-                            />
-                        </div>
-                        <MatchDateTime date={date} time={time} timezone={timezone} />
+                        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
+                            <div>
+                                <Chip
+                                    label={STATUS_LABELS[status]}
+                                    variant="outlined"
+                                    color={STATUS_COLORS[status] as "success" | "error" | "default"}
+                                    size="small"
+                                // sx={{ fontWeight: 600, borderRadius: 5, px: 0.5 }}
+                                />
+                            </div>
+                            <MatchDateTime date={date} time={time} timezone={timezone} />
+                        </Stack>
                         <MatchVenueInfo venue={venue} competition={competition} />
                     </Stack>
                     <Divider orientation="vertical" flexItem sx={{ mr: 2.5 }} />
-
                     <Stack direction="column" sx={{ flex: 1 }}>
-
                         <MatchTeamsRow homeTeam={homeTeam} awayTeam={awayTeam} />
                         {canPredict && (
                             <MatchPredictionSection
@@ -81,17 +78,8 @@ export function MatchCard({
                             />
                         )}
                     </Stack>
-                    {/* <MatchStatusControls
-                        status={status}
-                        onAlertClick={onAlertClick}
-                        onMoreClick={onMoreClick}
-                    /> */}
-                    {/* </Box> */}
                 </Stack>
-
             </CardContent>
-
-
         </Card>
     );
 }

@@ -61,8 +61,8 @@ export function MatchPredictionSection({
 
     return (
         <>
-            <Divider />
-            <Stack sx={{mt:1}} spacing={1}>
+            <Divider sx={{ my: 1 }} />
+            <Stack spacing={1}>
 
                 <Typography variant="body2">
                     Your prediction 
