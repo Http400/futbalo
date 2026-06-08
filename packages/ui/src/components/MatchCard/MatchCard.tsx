@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Chip, Divider, Stack } from "@mui/material";
+import { Box, Card, CardActions, CardContent, Chip, Divider, Stack } from "@mui/material";
 import type { MatchPrediction, MatchStatus, MatchTeam } from "./types";
 import { MatchDateTime } from "./MatchDateTime";
 import { MatchTeamsRow } from "./MatchTeamsRow";
@@ -31,6 +31,7 @@ export interface MatchCardProps {
     status: MatchStatus;
     prediction?: MatchPrediction;
     onPredictionChange?: (prediction: MatchPrediction) => void;
+    canPredict?: boolean;
 }
 
 export function MatchCard({
@@ -43,43 +44,52 @@ export function MatchCard({
     competition,
     status,
     prediction = null,
-    onPredictionChange
+    onPredictionChange,
+    canPredict = false
 }: MatchCardProps) {
-    const canPredict = status === "upcoming";
 
     return (
         <Card variant="outlined" sx={{ borderRadius: 3 }}>
             <CardContent sx={{ pb: 0 }}>
-                <Stack direction="row" spacing={2}>
-                    <Stack spacing={2}>
-                        <Stack direction="row" sx={{ justifyContent: "space-between" }}>
-                            <div>
-                                <Chip
-                                    label={STATUS_LABELS[status]}
-                                    variant="outlined"
-                                    color={STATUS_COLORS[status] as "success" | "error" | "default"}
-                                    size="small"
-                                // sx={{ fontWeight: 600, borderRadius: 5, px: 0.5 }}
-                                />
-                            </div>
-                            <MatchDateTime date={date} time={time} timezone={timezone} />
+                <Stack spacing={2}>
+
+
+                    <Stack direction="row" spacing={2}>
+                        <Stack spacing={2}>
+                            <Stack direction="row" sx={{ width: 180, justifyContent: "space-between" }}>
+                                <div>
+                                    <Chip
+                                        label={STATUS_LABELS[status]}
+                                        variant="outlined"
+                                        color={STATUS_COLORS[status] as "success" | "error" | "default"}
+                                        size="small"
+                                    // sx={{ fontWeight: 600, borderRadius: 5, px: 0.5 }}
+                                    />
+                                </div>
+                                <MatchDateTime date={date} time={time} timezone={timezone} />
+                            </Stack>
+                            
                         </Stack>
-                        <MatchVenueInfo venue={venue} competition={competition} />
+                        <Divider orientation="vertical" flexItem sx={{ mr: 2.5 }} />
+                        <Stack direction="column" sx={{ flex: 1 }}>
+                            <MatchTeamsRow homeTeam={homeTeam} awayTeam={awayTeam} />
+                            {canPredict && (
+                                <MatchPredictionSection
+                                    homeTeam={homeTeam}
+                                    awayTeam={awayTeam}
+                                    prediction={prediction}
+                                    onPredictionChange={onPredictionChange}
+                                />
+                            )}
+                        </Stack>
                     </Stack>
-                    <Divider orientation="vertical" flexItem sx={{ mr: 2.5 }} />
-                    <Stack direction="column" sx={{ flex: 1 }}>
-                        <MatchTeamsRow homeTeam={homeTeam} awayTeam={awayTeam} />
-                        {canPredict && (
-                            <MatchPredictionSection
-                                homeTeam={homeTeam}
-                                awayTeam={awayTeam}
-                                prediction={prediction}
-                                onPredictionChange={onPredictionChange}
-                            />
-                        )}
-                    </Stack>
+                    <Divider flexItem />
+                    
                 </Stack>
             </CardContent>
+            <CardActions sx={{ px: 2 }}>
+                    <MatchVenueInfo venue={venue} competition={competition} />
+      </CardActions>
         </Card>
     );
 }

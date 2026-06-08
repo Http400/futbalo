@@ -42,7 +42,7 @@ export const GlobeWrapper= () => {
 
   return (
     <>
-    {SEED_POINTS.map(point => {
+    {/* {SEED_POINTS.map(point => {
           const isSelected = point.id === selectedId
           return (
             <div
@@ -64,12 +64,13 @@ export const GlobeWrapper= () => {
               {point.label}
             </div>
           )
-        })}
+        })} */}
     <div style={{
         position: 'absolute',
         right: `-${GLOBE_SIZE * 0.45}px`,
         bottom: `-${GLOBE_SIZE * 0.55}px`,
     }}>
+      
         <Globe
           points={points}
           width={GLOBE_SIZE}

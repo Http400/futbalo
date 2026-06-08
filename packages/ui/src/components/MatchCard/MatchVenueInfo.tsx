@@ -9,29 +9,19 @@ interface MatchVenueInfoProps {
 
 export function MatchVenueInfo({ venue, competition }: MatchVenueInfoProps) {
     return (
-        // <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1.5, mb: 1 }}>
-        <Stack>
-            <Stack direction="row" spacing={1}>
-                <StadiumOutlinedIcon sx={{ fontSize: 16, color: "text.secondary" }} />
-                <Typography variant="body2" color="text.secondary">
-                    {venue}
-                </Typography>
-            </Stack>
-
-            {/* <Box sx={{ display: "flex", alignItems: "center", gap: 0.75 }}>
-                <StadiumOutlinedIcon sx={{ fontSize: 16, color: "text.secondary" }} />
-                <Typography variant="body2" color="text.secondary">
-                    {venue}
-                </Typography>
-            </Box> */}
-            {/* <Divider orientation="vertical" flexItem /> */}
+        <Stack direction="row" sx={{ flex: 1, justifyContent: "space-between"}}>
             <Stack direction="row" spacing={1}>
                 <EmojiEventsOutlinedIcon sx={{ fontSize: 16, color: "text.secondary" }} />
                 <Typography variant="body2" color="text.secondary">
                     {competition}
                 </Typography>
             </Stack>
+            <Stack direction="row" spacing={1}>
+                <StadiumOutlinedIcon sx={{ fontSize: 16, color: "text.secondary" }} />
+                <Typography variant="body2" color="text.secondary">
+                    {venue}
+                </Typography>
+            </Stack>
         </Stack>
-        // </Box>
     );
 }

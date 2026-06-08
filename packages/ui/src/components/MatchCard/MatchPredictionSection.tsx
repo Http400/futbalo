@@ -65,11 +65,11 @@ export function MatchPredictionSection({
             <Stack spacing={1}>
 
                 <Typography variant="body2">
-                    Your prediction 
+                    Your prediction
                     <Tooltip title="You can change your prediction before the match starts">
- 
-                    <InfoOutlinedIcon sx={{ fontSize: 14, color: "text.secondary" }} />
-</Tooltip>
+
+                        <InfoOutlinedIcon sx={{ ml: 0.25, fontSize: 14, color: "text.secondary" }} />
+                    </Tooltip>
                 </Typography>
                 <Stack direction="row" spacing={1.5} sx={{ flex: 1 }}>
                     <PredictionButton

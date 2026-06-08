@@ -19,7 +19,7 @@ const baseMatch = {
   date: 'SAT, JUN 15',
   time: '8:00 PM',
   timezone: 'GMT-5',
-  venue: "AT&T Stadium, Dallas",
+  venue: "Levi's Stadium, San Francisco Bay Area (Santa Clara)",
   competition: 'Group A • Matchday 1',
   status: 'upcoming' as const,
 };
