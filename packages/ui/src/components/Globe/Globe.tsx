@@ -39,6 +39,8 @@ export interface GlobeProps {
   focusPoint?: { lat: number; lng: number } | null
   /** Initial lat/lng to center on when the globe first loads (no animation). */
   initialView?: { lat: number; lng: number } | null
+  /** Allow the user to manually rotate the globe by dragging. Default: true */
+  allowManualRotation?: boolean
 }
 
 function latLngToVec3(lat: number, lng: number, radius: number): THREE.Vector3 {
@@ -100,6 +102,7 @@ export default function Globe({
   fadeSpeed = 0,
   focusPoint = null,
   initialView = null,
+  allowManualRotation = true,
 }: GlobeProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -111,6 +114,11 @@ export default function Globe({
   const pointIndexByIdRef = useRef<Map<string, number>>(new Map())
   const targetRotRef = useRef<{ x: number; y: number } | null>(null)
   const labelsRef = useRef<LabelEntry[]>([])
+  const allowManualRotationRef = useRef(allowManualRotation)
+
+  useEffect(() => {
+    allowManualRotationRef.current = allowManualRotation
+  }, [allowManualRotation])
 
   // ------------------------------------------------------------------
   // Scene setup (runs once on mount)
@@ -231,6 +239,7 @@ export default function Globe({
     // Mouse / touch drag to rotate
     // ------------------------------------------------------------------
     const onMouseDown = (e: MouseEvent) => {
+      if (!allowManualRotationRef.current) return
       isDraggingRef.current = true
       previousMouseRef.current = { x: e.clientX, y: e.clientY }
     }
@@ -410,9 +419,10 @@ export default function Globe({
   }, [])
 
   useEffect(() => {
-    if (!focusPoint) return
     const state = stateRef.current
-    const rot = computeTargetRot(focusPoint.lat, focusPoint.lng)
+    const target = focusPoint ?? initialView
+    if (!target) return
+    const rot = computeTargetRot(target.lat, target.lng)
     if (state) {
       // Normalize target Y so the globe takes the shortest arc from current rotation
       const currentY = state.rotationGroup.rotation.y
@@ -421,7 +431,7 @@ export default function Globe({
       rot.y = currentY + normalized
     }
     targetRotRef.current = rot
-  }, [focusPoint, computeTargetRot])
+  }, [focusPoint, initialView, computeTargetRot])
 
   // ------------------------------------------------------------------
   // Add new points whenever the `points` prop changes
@@ -492,7 +502,7 @@ export default function Globe({
   return (
     <div
       ref={containerRef}
-      style={{ position: 'relative', width: resolvedWidth, height: resolvedHeight, cursor: 'grab' }}
+      style={{ position: 'relative', width: resolvedWidth, height: resolvedHeight, cursor: allowManualRotation ? 'grab' : 'default' }}
     >
       <canvas ref={canvasRef} style={{ display: 'block' }} />
       <div

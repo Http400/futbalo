@@ -32,6 +32,8 @@ export interface MatchCardProps {
     prediction?: MatchPrediction;
     onPredictionChange?: (prediction: MatchPrediction) => void;
     canPredict?: boolean;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 }
 
 export function MatchCard({
@@ -45,11 +47,13 @@ export function MatchCard({
     status,
     prediction = null,
     onPredictionChange,
-    canPredict = false
+    canPredict = false,
+    onMouseEnter,
+    onMouseLeave,
 }: MatchCardProps) {
 
     return (
-        <Card variant="outlined" sx={{ borderRadius: 3 }}>
+        <Card variant="outlined" sx={{ borderRadius: 3 }} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <CardContent sx={{ pb: 0 }}>
                 <Stack spacing={2}>
 

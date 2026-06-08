@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MatchCardList } from '@futbalo/ui';
 import type { MatchCardProps, MatchStatus as CardMatchStatus } from '@futbalo/ui';
 import type { Match, MatchStatus, Stadium, Stage, Team } from '@futbalo/types';
 import { useGetMatchesQuery, useGetStadiumsQuery, useGetStagesQuery, useGetTeamsQuery } from '../store/api/catalogApi';
+import { parseDmsCoords } from '../utils/coords';
 
 const FETCH_LIMIT = 4;
+
+interface MatchesSectionProps {
+  onStadiumFocus?: (coords: { lat: number; lng: number } | null) => void;
+}
 
 function mapStatus(status: MatchStatus): CardMatchStatus {
   if (status === 'LIVE') return 'live';
@@ -63,7 +68,7 @@ function mapMatchesToCards(
   });
 }
 
-export function MatchesSection() {
+export function MatchesSection({ onStadiumFocus }: MatchesSectionProps) {
   const [page, setPage] = useState(1);
 
   const { data: matchesResponse, isLoading: matchesLoading, isError: matchesError } =
@@ -88,6 +93,18 @@ export function MatchesSection() {
 
   const totalPages = matchesResponse?.totalPages ?? 1;
 
+  function handleItemHover(index: number | null) {
+    if (index === null) {
+      onStadiumFocus?.(null);
+      return;
+    }
+    const match = matchesResponse?.data[index];
+    if (!match) return;
+    const stadium = stadiumsById[match.stadiumId];
+    const coords = parseDmsCoords(stadium?.coords);
+    onStadiumFocus?.(coords);
+  }
+
   return (
     <section style={{ padding: '24px 16px', maxWidth: 700 }}>
       <h2 style={{ fontSize: '1.5rem', marginBottom: 16, fontWeight: 600 }}>Matches</h2>
@@ -110,6 +127,7 @@ export function MatchesSection() {
           controlledPage={page}
           totalPages={totalPages}
           onPageChange={setPage}
+          onItemHover={handleItemHover}
         />
       )}
     </section>

@@ -12,6 +12,8 @@ export interface MatchCardListProps {
     totalPages?: number;
     /** Called when the user clicks a page in controlled mode. */
     onPageChange?: (page: number) => void;
+    /** Called with the index of the hovered item, or null when mouse leaves. */
+    onItemHover?: (index: number | null) => void;
 }
 
 export function MatchCardList({
@@ -21,6 +23,7 @@ export function MatchCardList({
     controlledPage,
     totalPages,
     onPageChange,
+    onItemHover,
 }: MatchCardListProps) {
     const [internalPage, setInternalPage] = useState(1);
 
@@ -49,7 +52,12 @@ export function MatchCardList({
         <Stack spacing={2}>
             <Stack spacing={2}>
                 {displayItems.map((item, index) => (
-                    <MatchCard key={index} {...item} />
+                    <MatchCard
+                        key={index}
+                        {...item}
+                        onMouseEnter={() => onItemHover?.(index)}
+                        onMouseLeave={() => onItemHover?.(null)}
+                    />
                 ))}
             </Stack>
             {pageCount > 1 && (

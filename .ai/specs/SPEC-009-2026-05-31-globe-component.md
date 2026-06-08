@@ -89,6 +89,8 @@ export interface GlobeProps {
   focusPoint?: { lat: number; lng: number } | null
   /** Initial lat/lng to center on when the globe first loads (no animation). */
   initialView?: { lat: number; lng: number } | null
+  /** Allow the user to manually rotate the globe by dragging. Default: true */
+  allowManualRotation?: boolean
 }
 ```
 
@@ -130,6 +132,9 @@ No environment variables or feature flags. The only external dependency introduc
 **vite.config.ts:** No change needed — `three` is bundled (not added to `external`).
 
 ## Changelog
+
+### 2026-06-08
+- Added `allowManualRotation?: boolean` prop (default `true`). When `false`, mouse-drag handlers are disabled and cursor changes to `default`. Implemented via a `useRef` mirror to avoid re-registering the one-time setup effect.
 
 ### 2026-05-31
 - Initial specification: move Globe component from map_demo prototype to packages/ui and add Storybook stories
