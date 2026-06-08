@@ -4,7 +4,7 @@ import type { MatchCardProps, MatchStatus as CardMatchStatus } from '@futbalo/ui
 import type { Match, MatchStatus, Stadium, Stage, Team } from '@futbalo/types';
 import { useGetMatchesQuery, useGetStadiumsQuery, useGetStagesQuery, useGetTeamsQuery } from '../store/api/catalogApi';
 
-const FETCH_LIMIT = 20;
+const FETCH_LIMIT = 4;
 
 function mapStatus(status: MatchStatus): CardMatchStatus {
   if (status === 'LIVE') return 'live';
@@ -64,8 +64,10 @@ function mapMatchesToCards(
 }
 
 export function MatchesSection() {
+  const [page, setPage] = useState(1);
+
   const { data: matchesResponse, isLoading: matchesLoading, isError: matchesError } =
-    useGetMatchesQuery({ page: 1, limit: FETCH_LIMIT });
+    useGetMatchesQuery({ page, limit: FETCH_LIMIT });
 
   const { data: teams } = useGetTeamsQuery();
   const { data: stadiums } = useGetStadiumsQuery();
@@ -84,6 +86,8 @@ export function MatchesSection() {
     ? mapMatchesToCards(matchesResponse.data, teamsById, stadiumsById, stagesById)
     : [];
 
+  const totalPages = matchesResponse?.totalPages ?? 1;
+
   return (
     <section style={{ padding: '24px 16px', maxWidth: 700 }}>
       <h2 style={{ fontSize: '1.5rem', marginBottom: 16, fontWeight: 600 }}>Matches</h2>
@@ -99,7 +103,14 @@ export function MatchesSection() {
       )}
 
       {!matchesLoading && !matchesError && (
-        <MatchCardList items={cards} pageSize={10} emptyMessage="No matches found" />
+        <MatchCardList
+          items={cards}
+          pageSize={FETCH_LIMIT}
+          emptyMessage="No matches found"
+          controlledPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
       )}
     </section>
   );

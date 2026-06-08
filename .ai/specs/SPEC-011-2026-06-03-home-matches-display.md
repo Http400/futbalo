@@ -110,76 +110,114 @@ Adds a match list to the `web-app` home page below the existing `GlobeWrapper`. 
 
 ## Architecture
 
-### New files in `apps/web-app/src/`
+### Constraint: No MUI in `web-app`
+
+`web-app` does **not** have `@mui/material` as a direct dependency. All MUI usage is confined to `@futbalo/ui`. This means pagination controls must be surfaced through `@futbalo/ui` — not imported directly in `MatchesSection`.
+
+### Affected files
 
 ```
+packages/ui/src/components/MatchCardList/
+└── MatchCardList.tsx              # UPDATED — add controlled/external pagination mode
+
 apps/web-app/src/
 ├── store/
 │   └── api/
-│       └── catalogApi.ts          # NEW — RTK Query slice for catalog-service
+│       └── catalogApi.ts          # EXISTS — RTK Query slice; already has getMatches endpoint
 ├── components/
-│   └── MatchesSection.tsx         # NEW — container: fetches + joins + renders list
+│   └── MatchesSection.tsx         # EXISTS — wire page state to API + pass controlled props
 ```
 
 ### Updated files
 
-- `src/store/store.ts` — register `catalogApi` reducer + middleware
-- `src/App.tsx` — render `<MatchesSection />` below `<GlobeWrapper />`; change `main` from `overflow: hidden` / `position: fixed` to scrollable
+- `src/App.tsx` — already renders `<MatchesSection />`; currently has commented-out GlobeWrapper wrapper
+- `packages/ui/src/components/MatchCardList/MatchCardList.tsx` — add optional controlled pagination props
 
 ### Data flow
 
 ```
-App.tsx
-  └── main (scrollable)
-        ├── GlobeWrapper          (existing, height: 100vh)
-        └── MatchesSection
-              ├── useGetMatchesQuery({ page, limit: 20 })   → PaginatedResponse<Match>
-              ├── useGetTeamsQuery()                         → Team[]
-              ├── useGetStadiumsQuery()                      → Stadium[]
-              ├── mapMatchesToCards(matches, teamsById, stadiumsById) → MatchCardProps[]
-              ├── MatchCardList items={cards} pageSize={20}
-              └── MUI Pagination count={totalPages} page={page} onChange={setPage}
+MatchesSection (manages page state: useState<number>(1))
+  ├── useGetMatchesQuery({ page, limit: 20 })   → PaginatedResponse<Match>
+  ├── useGetTeamsQuery()                         → Team[]
+  ├── useGetStadiumsQuery()                      → Stadium[]
+  ├── useGetStagesQuery()                        → Stage[]
+  ├── mapMatchesToCards(matches, teamsById, stadiumsById, stagesById) → MatchCardProps[]
+  └── MatchCardList
+        items={cards}
+        pageSize={20}                            ← equal to limit; hides internal pagination
+        controlledPage={page}                    ← NEW controlled prop
+        totalPages={matchesResponse.totalPages}  ← NEW controlled prop
+        onPageChange={setPage}                   ← NEW controlled prop
 ```
 
+When `controlledPage` is provided, `MatchCardList` skips its internal `useState` and slice logic — it renders all passed items as-is and delegates pagination UI to the external `totalPages` / `onPageChange` props.
+
+### `MatchCardList` — controlled mode extension
+
+New optional props added to `MatchCardListProps`:
+
+```ts
+export interface MatchCardListProps {
+  items: MatchCardProps[];
+  pageSize?: number;
+  emptyMessage?: string;
+  // Controlled (external) pagination — when provided, internal page state is bypassed
+  controlledPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+}
+```
+
+Behaviour:
+- If `controlledPage` is `undefined` → existing internal pagination behaviour (no breaking change).
+- If `controlledPage` is a number → render `items` as-is (no slicing), render MUI `Pagination` with `count={totalPages}` and `onChange` wired to `onPageChange`.
+
 ### `mapMatchesToCards` — join logic
+
+Four data sources: matches, teams, stadiums, **stages** (not in original spec).
 
 ```ts
 function mapMatchesToCards(
   matches: Match[],
   teamsById: Record<string, Team>,
   stadiumsById: Record<string, Stadium>,
+  stagesById: Record<string, Stage>,
 ): MatchCardProps[] {
   return matches.map((m) => {
     const homeTeam = m.homeTeamId ? teamsById[m.homeTeamId] : undefined;
     const awayTeam = m.awayTeamId ? teamsById[m.awayTeamId] : undefined;
-    const stadium = m.stadiumId ? stadiumsById[m.stadiumId] : undefined;
-
+    const stadium = stadiumsById[m.stadiumId];
+    const timezone = getStadiumTimezone(stadium);
     const kickoff = m.kickoffAt ? new Date(m.kickoffAt) : null;
-    const timezone = stadium?.timezone ?? 'UTC';
 
     return {
-      homeTeam: {
-        name: homeTeam?.name ?? m.homePlaceholder ?? 'TBD',
-        code: homeTeam?.fifaCode ?? '???',
-        flagUrl: homeTeam?.flagUrl ?? '',
-      },
-      awayTeam: {
-        name: awayTeam?.name ?? m.awayPlaceholder ?? 'TBD',
-        code: awayTeam?.fifaCode ?? '???',
-        flagUrl: awayTeam?.flagUrl ?? '',
-      },
-      date: kickoff
-        ? kickoff.toLocaleDateString('en-GB', { timeZone: timezone, day: '2-digit', month: 'short', year: 'numeric' })
-        : 'TBD',
-      time: kickoff
-        ? kickoff.toLocaleTimeString('en-GB', { timeZone: timezone, hour: '2-digit', minute: '2-digit' })
-        : '--:--',
+      homeTeam: { name: homeTeam?.name ?? m.homePlaceholder ?? 'TBD', code: homeTeam?.fifaCode ?? '???', flagUrl: homeTeam?.flagUrl ?? '' },
+      awayTeam: { name: awayTeam?.name ?? m.awayPlaceholder ?? 'TBD', code: awayTeam?.fifaCode ?? '???', flagUrl: awayTeam?.flagUrl ?? '' },
+      date: kickoff ? kickoff.toLocaleDateString('en-GB', { timeZone: timezone, day: '2-digit', month: 'short', year: 'numeric' }) : 'TBD',
+      time: kickoff ? kickoff.toLocaleTimeString('en-GB', { timeZone: timezone, hour: '2-digit', minute: '2-digit' }) : '--:--',
       timezone,
       venue: stadium ? `${stadium.name}, ${stadium.city}` : 'TBD',
-      competition: 'FIFA World Cup 2026',
+      competition: stagesById[m.stageId]?.name ?? 'Unknown Stage',
       status: mapStatus(m.status),
     };
   });
+}
+```
+
+### Timezone mapping
+
+Stadium `timezone` field stores UTC-offset strings (`"UTC-8"`, `"UTC-7"`, etc.). These must be mapped to IANA timezone identifiers for `toLocaleDateString`/`toLocaleTimeString`:
+
+```ts
+const TIMEZONE_MAP: Record<string, string> = {
+  'UTC-8': 'America/Los_Angeles',
+  'UTC-7': 'America/Denver',
+  'UTC-6': 'America/Chicago',
+  'UTC-5': 'America/New_York',
+};
+function getStadiumTimezone(stadium: Stadium | undefined): string {
+  if (!stadium) return 'UTC';
+  return TIMEZONE_MAP[stadium.timezone] ?? 'UTC';
 }
 ```
 
@@ -228,57 +266,74 @@ Used by `useGetStadiumsQuery`. Returns `Stadium[]` (see SPEC-005).
 
 ---
 
+### `GET /stages`
+
+Used by `useGetStagesQuery`. Returns `Stage[]`.
+
+**Caching:** Same as teams/stadiums — single fetch, cached. Used to derive the `competition` label per match card.
+
+---
+
 ## UI/UX
-
-### Layout change in `App.tsx`
-
-The `<main>` element currently has `overflow: hidden` and `position: fixed` to keep the globe viewport-locked. After this change:
-
-- Remove `position: fixed` and `overflow: hidden`
-- The globe section (`GlobeWrapper`) retains `height: 100vh`
-- `MatchesSection` follows below, naturally pushing the page height
 
 ### `MatchesSection` structure
 
-```
-<section style={{ padding: '24px 16px', maxWidth: 800, margin: '0 auto' }}>
-  <Typography variant="h5" gutterBottom>Matches</Typography>
+No direct MUI imports — pagination is surfaced through `MatchCardList`'s controlled props:
 
-  {/* Loading state */}
-  {isLoading && <CircularProgress />}
+```tsx
+const [page, setPage] = useState(1);
+const { data: matchesResponse, isLoading, isError } = useGetMatchesQuery({ page, limit: 20 });
+const totalPages = matchesResponse?.totalPages ?? 1;
 
-  {/* Error state */}
-  {isError && <Alert severity="error">Failed to load matches. Please try again later.</Alert>}
+// ...enrich cards...
 
-  {/* Content */}
+<section style={{ padding: '24px 16px', maxWidth: 700 }}>
+  <h2 style={{ fontSize: '1.5rem', marginBottom: 16, fontWeight: 600 }}>Matches</h2>
+
+  {isLoading && <p style={{ textAlign: 'center', color: '#666', padding: '32px 0' }}>Loading matches…</p>}
+
+  {isError && <p style={{ textAlign: 'center', color: '#d32f2f', padding: '32px 0' }}>
+    Failed to load matches. Please try again later.
+  </p>}
+
   {!isLoading && !isError && (
-    <>
-      <MatchCardList items={cards} pageSize={20} emptyMessage="No matches found" />
-      {totalPages > 1 && (
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(_, v) => setPage(v)}
-          color="primary"
-          sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}
-        />
-      )}
-    </>
+    <MatchCardList
+      items={cards}
+      pageSize={20}
+      emptyMessage="No matches found"
+      controlledPage={page}
+      totalPages={totalPages}
+      onPageChange={setPage}
+    />
   )}
 </section>
 ```
 
-> **Note:** `MatchCardList` is given `pageSize={20}` (equal to `limit`) so its internal pagination always shows a single page with no internal `Pagination` rendered. Navigation is handled externally.
+> **Why `pageSize={20}` still passed**: Keeps the prop consistent in case `controlledPage` is not provided (e.g. in tests with static data). When `controlledPage` is set, `MatchCardList` ignores slicing and uses `totalPages` from the API.
+
+### `MatchCardList` controlled mode rendering
+
+```tsx
+// In MatchCardList.tsx — controlled branch:
+const isControlled = controlledPage !== undefined;
+
+const displayItems = isControlled ? items : items.slice((page - 1) * pageSize, page * pageSize);
+const currentPage = isControlled ? controlledPage : page;
+const pageCount = isControlled ? (totalPages ?? 1) : Math.ceil(items.length / pageSize);
+function handleChange(_: React.ChangeEvent<unknown>, value: number) {
+  isControlled ? onPageChange?.(value) : setPage(value);
+}
+```
 
 ### Loading states
 
 | State | Behaviour |
 |---|---|
-| Matches loading | `CircularProgress` shown |
-| Matches loaded, teams/stadiums still loading | Show cards with `name: "TBD"`, `flagUrl: ""` — teams/stadiums RTK cache usually resolves quickly |
-| All loaded | Full cards with flags, venue, timezone |
-| Matches error | `Alert` error message |
-| Teams/stadiums error | Silently degrade — show TBD placeholders instead of names/flags |
+| Matches loading | Plain `<p>` loading text shown |
+| Matches loaded, teams/stadiums/stages still loading | Show cards with `name: "TBD"`, `flagUrl: ""` — lookups degrade gracefully |
+| All loaded | Full cards with flags, venue, timezone, stage name |
+| Matches error | Plain `<p>` error message shown |
+| Teams/stadiums/stages error | Silently degrade — show TBD placeholders |
 
 ---
 
@@ -304,6 +359,14 @@ VITE_CATALOG_BASE_URL=http://localhost:4001
 ---
 
 ## Changelog
+
+### 2026-06-08
+- Corrected Architecture: no direct MUI in `web-app`; pagination must go through `MatchCardList` controlled props.
+- Added `MatchCardList` controlled mode extension (`controlledPage`, `totalPages`, `onPageChange`).
+- Added stages enrichment (4th data source); updated `mapMatchesToCards` signature.
+- Added timezone mapping (`TIMEZONE_MAP`) — stadium stores UTC-offset strings, not IANA identifiers.
+- Corrected loading/error states to plain HTML (no MUI `CircularProgress`/`Alert` in `web-app`).
+- Documented `GET /stages` endpoint usage.
 
 ### 2026-06-03
 - Initial specification: home page match list using catalog-service + MatchCardList.

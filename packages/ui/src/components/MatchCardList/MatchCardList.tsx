@@ -6,14 +6,36 @@ export interface MatchCardListProps {
     items: MatchCardProps[];
     pageSize?: number;
     emptyMessage?: string;
+    /** When set, bypasses internal page state — consumer drives the current page. */
+    controlledPage?: number;
+    /** Total number of pages from the server. Required when controlledPage is set. */
+    totalPages?: number;
+    /** Called when the user clicks a page in controlled mode. */
+    onPageChange?: (page: number) => void;
 }
 
 export function MatchCardList({
     items,
     pageSize = 5,
     emptyMessage = "No matches found",
+    controlledPage,
+    totalPages,
+    onPageChange,
 }: MatchCardListProps) {
-    const [page, setPage] = useState(1);
+    const [internalPage, setInternalPage] = useState(1);
+
+    const isControlled = controlledPage !== undefined;
+    const currentPage = isControlled ? controlledPage : internalPage;
+    const pageCount = isControlled ? (totalPages ?? 1) : Math.ceil(items.length / pageSize);
+    const displayItems = isControlled ? items : items.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    function handlePageChange(_: React.ChangeEvent<unknown>, value: number) {
+        if (isControlled) {
+            onPageChange?.(value);
+        } else {
+            setInternalPage(value);
+        }
+    }
 
     if (items.length === 0) {
         return (
@@ -23,24 +45,17 @@ export function MatchCardList({
         );
     }
 
-    const pageCount = Math.ceil(items.length / pageSize);
-    const currentItems = items.slice((page - 1) * pageSize, page * pageSize);
-
-    function handlePageChange(_: React.ChangeEvent<unknown>, value: number) {
-        setPage(value);
-    }
-
     return (
         <Stack spacing={2}>
             <Stack spacing={2}>
-                {currentItems.map((item, index) => (
+                {displayItems.map((item, index) => (
                     <MatchCard key={index} {...item} />
                 ))}
             </Stack>
             {pageCount > 1 && (
                 <Pagination
                     count={pageCount}
-                    page={page}
+                    page={currentPage}
                     onChange={handlePageChange}
                     color="primary"
                     sx={{ alignSelf: "center" }}
