@@ -28,3 +28,6 @@ services/auth-service/src/generated
 .github/skills/inject-standards/
 .github/skills/sync-standards/
 .github/skills/verify-standards/
+
+# AI standards (local only)
+.ai/standards/
