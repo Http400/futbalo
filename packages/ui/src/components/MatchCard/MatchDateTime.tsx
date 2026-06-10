@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 interface MatchDateTimeProps {
     date: string;
@@ -6,7 +6,7 @@ interface MatchDateTimeProps {
     timezone: string;
 }
 
-export function MatchDateTime({ date, time, timezone }: MatchDateTimeProps) {
+export function MatchDateTime({ date, time }: MatchDateTimeProps) {
     return (
         <Stack>
             <Typography

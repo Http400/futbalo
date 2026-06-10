@@ -24,13 +24,12 @@ const Team = ({ name, flagIcon, ...gridProps }: Team & GridProps) => (
   </Grid>
 );
 
-export function MatchListItem({ homeTeam, awayTeam, date, score }: MatchListItemProps) {
+export function MatchListItem({ homeTeam, awayTeam, score }: MatchListItemProps) {
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        // justifyContent: 'space-between',
         px: 2,
         py: 1.5,
         border: '1px solid',

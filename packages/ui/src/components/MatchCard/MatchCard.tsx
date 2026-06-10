@@ -1,8 +1,7 @@
-import { Box, Card, CardActions, CardContent, Chip, Divider, Stack } from "@mui/material";
+import { Card, CardActions, CardContent, Chip, Divider, Stack } from "@mui/material";
 import type { MatchPrediction, MatchStatus, MatchTeam } from "./types";
 import { MatchDateTime } from "./MatchDateTime";
 import { MatchTeamsRow } from "./MatchTeamsRow";
-import { MatchStatusControls } from "./MatchStatusControls";
 import { MatchVenueInfo } from "./MatchVenueInfo";
 import { MatchPredictionSection } from "./MatchPredictionSection";
 
@@ -67,7 +66,6 @@ export function MatchCard({
                                         variant="outlined"
                                         color={STATUS_COLORS[status] as "success" | "error" | "default"}
                                         size="small"
-                                    // sx={{ fontWeight: 600, borderRadius: 5, px: 0.5 }}
                                     />
                                 </div>
                                 <MatchDateTime date={date} time={time} timezone={timezone} />

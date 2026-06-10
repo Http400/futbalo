@@ -26,7 +26,7 @@ import * as authService from '../services/auth.service.js';
 const mockRegister = vi.mocked(authService.register);
 const mockLogin = vi.mocked(authService.login);
 const mockRefresh = vi.mocked(authService.refresh);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const { AuthError } = authService as any;
 
 const fakeTokens = { accessToken: 'access-token', refreshToken: 'refresh-token' };

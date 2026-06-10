@@ -6,7 +6,6 @@ import { AuthForm } from './AuthForm';
 // so testing-library computes label text as e.g. "Password  *".
 // Use /^password/i (start-anchored only) to match "Password *" without matching "Confirm password *".
 const passwordLabel = /^password/i;
-const confirmPasswordLabel = /confirm password/i;
 
 describe('AuthForm — signIn mode', () => {
   it('renders email and password inputs', () => {

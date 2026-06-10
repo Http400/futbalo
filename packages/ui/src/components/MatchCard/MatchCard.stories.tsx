@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { MatchCard } from './MatchCard';
-import type { MatchPrediction } from './MatchCard';
+import type { MatchCardProps, MatchPrediction } from './MatchCard';
 
 const meta: Meta<typeof MatchCard> = {
   title: 'UI/MatchCard',
@@ -63,17 +63,19 @@ export const Finished: Story = {
   },
 };
 
+function InteractiveMatchCard(args: MatchCardProps) {
+  const [prediction, setPrediction] = useState<MatchPrediction>('1');
+  return (
+    <MatchCard
+      {...args}
+      prediction={prediction}
+      onPredictionChange={setPrediction}
+    />
+  );
+}
+
 export const Interactive: Story = {
-  render: (args) => {
-    const [prediction, setPrediction] = useState<MatchPrediction>('1');
-    return (
-      <MatchCard
-        {...args}
-        prediction={prediction}
-        onPredictionChange={setPrediction}
-      />
-    );
-  },
+  render: (args) => <InteractiveMatchCard {...args} />,
   args: {
     ...mexicoVsUsa,
     status: 'upcoming',

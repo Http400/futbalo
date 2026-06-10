@@ -297,7 +297,7 @@ export default function Globe({
         }
       }
       if (dirty) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+         
         pointsGeometry.attributes['lifetime']!.needsUpdate = true
       }
 
@@ -325,7 +325,7 @@ export default function Globe({
       for (let iter = 0; iter < 8; iter++) {
         for (let i = 0; i < layout.length; i++) {
           for (let j = i + 1; j < layout.length; j++) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+             
             const a = layout[i]!, b = layout[j]!
             const dx = b.x - a.x
             const dy = b.y - a.y
@@ -488,11 +488,11 @@ export default function Globe({
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     state.pointsGeometry.attributes['position']!.needsUpdate = true
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     state.pointsGeometry.attributes['lifetime']!.needsUpdate = true
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+     
     state.pointsGeometry.attributes['aSize']!.needsUpdate = true
   }, [points])
 
