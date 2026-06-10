@@ -18,7 +18,9 @@ COPY packages/types/package.json ./packages/types/
 COPY packages/ui/package.json ./packages/ui/
 COPY packages/utils/package.json ./packages/utils/
 
-RUN pnpm install --frozen-lockfile
+# --ignore-scripts: skip postinstall (prisma generate) here — the schema isn't
+# copied yet. The Prisma client is generated during the turbo build step below.
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
@@ -32,7 +34,7 @@ RUN pnpm exec turbo run build --filter="@futbalo/auth-service..."
 RUN cp -r services/auth-service/src/generated/. services/auth-service/dist/generated/
 
 # Create a self-contained production deployment (resolves pnpm symlinks into real node_modules)
-RUN pnpm deploy --filter=@futbalo/auth-service --prod /deploy
+RUN pnpm deploy --filter=@futbalo/auth-service --prod --ignore-scripts /deploy
 RUN cp -r services/auth-service/dist /deploy/dist
 RUN cp -r services/auth-service/prisma /deploy/prisma
 RUN cp services/auth-service/prisma.config.ts /deploy/prisma.config.ts

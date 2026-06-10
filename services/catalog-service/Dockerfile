@@ -16,7 +16,9 @@ COPY packages/types/package.json ./packages/types/
 COPY packages/ui/package.json ./packages/ui/
 COPY packages/utils/package.json ./packages/utils/
 
-RUN pnpm install --frozen-lockfile
+# --ignore-scripts: skip postinstall (prisma generate) here — the schema isn't
+# copied yet. The Prisma client is generated during the turbo build step below.
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
 COPY . .
 
@@ -24,7 +26,7 @@ RUN pnpm exec turbo run build --filter="@futbalo/catalog-service..."
 
 RUN cp -r services/catalog-service/src/generated/. services/catalog-service/dist/generated/
 
-RUN pnpm deploy --filter=@futbalo/catalog-service --prod /deploy
+RUN pnpm deploy --filter=@futbalo/catalog-service --prod --ignore-scripts /deploy
 RUN cp -r services/catalog-service/dist /deploy/dist
 RUN cp -r services/catalog-service/prisma /deploy/prisma
 RUN cp services/catalog-service/prisma.config.ts /deploy/prisma.config.ts
