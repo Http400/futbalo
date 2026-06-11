@@ -9,6 +9,20 @@ Produce a commit message for the current change set and offer to commit. Mirrors
 
 This skill drafts on the user's behalf. It does **not** add a co-author trailer (that policy applies when the CLI itself authors a commit). It never commits without explicit approval.
 
+## Autopilot guard (check first)
+
+This skill's commit step (Step 4) **requires an explicit human selection** via `ask_user`. Under **autopilot mode** that prompt is auto-answered by the runtime with a "user unavailable" response — it never renders selectable options — so genuine approval is impossible and the commit can never proceed.
+
+Therefore, **before doing anything else**, check whether you are operating in autopilot mode (it is stated in your system context):
+
+- **If autopilot is active** → STOP immediately. Do not run git probes, do not draft. Tell the user verbatim:
+
+  > This skill needs interactive approval before committing, which autopilot mode auto-answers and bypasses. Switch out of autopilot first — press `shift+tab` (or run `/autopilot` to toggle it off, or `/plan` to enter plan mode) — then re-invoke `/commit-message`.
+
+  Then end the turn. Do not auto-commit, do not loop on `ask_user`.
+
+- **If autopilot is NOT active** → proceed normally with Initial Response below.
+
 ## Initial Response
 
 When this skill is invoked:
@@ -109,31 +123,41 @@ Print the proposed message in a fenced block. Then print the ready-to-run comman
 
 If a merge/rebase/cherry-pick was detected in the Initial Response, restate that warning here.
 
-Then ask the user (multiple-choice):
+### Step 4: Ask the user what to do (multiple-choice):
 
-- question: "Commit with this message?"
-  header: "Confirm"
-  options:
-  - label: "Run it"
-    description: "Execute the git commit command above."
-  - label: "Edit"
-    description: "Tell me what to change and I'll redraft."
-  - label: "Copy only"
-    description: "Don't commit — I'll copy the command myself."
-  - label: "Cancel"
-    description: "Discard the draft."
-    multiSelect: false
+**You MUST call the `ask_user` tool here — do not print the options as plain text.** Use the tool so the choices render as selectable options. Pass:
 
-### Step 4: Execute (only on "Run it")
+- `question`: "Commit with this message?"
+- `choices`:
+  - `"Commit"` — execute the git commit command above.
+  - `"Commit and push"` — execute the git commit command, then `git push`.
+  - `"Edit"` — the user tells you what to change and you redraft.
+  - `"Copy only"` — don't commit; the user will copy the command themselves.
+  - `"Cancel"` — discard the draft.
 
-Run the exact command shown. Capture stdout and stderr.
+Map the user's selection to the matching follow-up:
+
+- **Commit** → proceed to Step 5 (commit only).
+- **Commit and push** → proceed to Step 5, then push (see Step 5).
+- **Edit** → ask what to change, redraft, and return to Step 3.
+- **Copy only** → stop without committing (leave the command printed).
+- **Cancel** → stop; discard the draft.
+
+### Step 5: Execute (on "Commit" or "Commit and push")
+
+Run the exact commit command shown. Capture stdout and stderr.
 
 - On success: print the new commit's short SHA and subject (`git log -1 --pretty=format:"%h %s"`).
 - On non-zero exit: surface the full stderr verbatim. Do not retry. Do not amend or rephrase the message without the user's say-so.
 
-### Step 5: Stop
+If the user chose **Commit and push** and the commit succeeded, run `git push`:
 
-Do not chain into other skills. Do not offer to push. The user invoked this for one commit.
+- On success: confirm the branch was pushed (include the remote/branch from the push output).
+- On non-zero exit: surface the full stderr verbatim. Do not retry or force-push. The commit still stands locally.
+
+### Step 6: Stop
+
+Do not chain into other skills. The user invoked this for one commit (and optionally a push).
 
 ## Edge cases
 
@@ -150,7 +174,7 @@ Do not chain into other skills. Do not offer to push. The user invoked this for 
 
 ## Notes
 
-- **Never auto-commit.** Even in autopilot, the confirm step is mandatory. The user owns the message.
+- **Never auto-commit.** Asking the user is mandatory. The user owns the message. Under autopilot the approval prompt is auto-answered and cannot count as approval — see the "Autopilot guard" section; abort and ask the user to leave autopilot rather than committing.
 - **No co-author trailer.** The CLI's trailer policy applies to commits the CLI authors; this skill drafts on the user's behalf, so the trailer is omitted unless the user asks for it.
 - **Mirror history, don't override it.** If recent commits use a scope form that differs from the rules above (e.g. `auth` instead of `auth-service`), prefer the existing form so history stays consistent.
 - **Subject-only when you can.** A clear subject + an honest diff beats a padded body. Add a body only when the change actually warrants explanation.
