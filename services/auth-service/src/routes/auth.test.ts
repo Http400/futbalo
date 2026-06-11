@@ -43,12 +43,12 @@ describe('GET /health', () => {
   });
 });
 
-describe('POST /auth/register', () => {
+describe('POST /register', () => {
   it('returns 201 with tokens on success', async () => {
     mockRegister.mockResolvedValue(fakeTokens);
 
     const res = await request(app)
-      .post('/auth/register')
+      .post('/register')
       .send({ email: 'user@example.com', name: 'Test User', password: 'password123' });
 
     expect(res.status).toBe(201);
@@ -58,7 +58,7 @@ describe('POST /auth/register', () => {
 
   it('returns 400 VAL_001 when name is missing', async () => {
     const res = await request(app)
-      .post('/auth/register')
+      .post('/register')
       .send({ email: 'user@example.com', password: 'password123' });
 
     expect(res.status).toBe(400);
@@ -68,7 +68,7 @@ describe('POST /auth/register', () => {
 
   it('returns 400 VAL_001 when password is too short', async () => {
     const res = await request(app)
-      .post('/auth/register')
+      .post('/register')
       .send({ email: 'user@example.com', name: 'Test User', password: 'short' });
 
     expect(res.status).toBe(400);
@@ -77,7 +77,7 @@ describe('POST /auth/register', () => {
 
   it('returns 400 VAL_001 when email is invalid', async () => {
     const res = await request(app)
-      .post('/auth/register')
+      .post('/register')
       .send({ email: 'not-an-email', name: 'Test User', password: 'password123' });
 
     expect(res.status).toBe(400);
@@ -88,7 +88,7 @@ describe('POST /auth/register', () => {
     mockRegister.mockRejectedValue(new AuthError('AUTH_003', 'Email already in use', 409));
 
     const res = await request(app)
-      .post('/auth/register')
+      .post('/register')
       .send({ email: 'taken@example.com', name: 'Test User', password: 'password123' });
 
     expect(res.status).toBe(409);
@@ -96,12 +96,12 @@ describe('POST /auth/register', () => {
   });
 });
 
-describe('POST /auth/login', () => {
+describe('POST /login', () => {
   it('returns 200 with tokens on success', async () => {
     mockLogin.mockResolvedValue(fakeTokens);
 
     const res = await request(app)
-      .post('/auth/login')
+      .post('/login')
       .send({ email: 'user@example.com', password: 'password123' });
 
     expect(res.status).toBe(200);
@@ -110,7 +110,7 @@ describe('POST /auth/login', () => {
   });
 
   it('returns 400 VAL_001 when email is missing', async () => {
-    const res = await request(app).post('/auth/login').send({ password: 'password123' });
+    const res = await request(app).post('/login').send({ password: 'password123' });
 
     expect(res.status).toBe(400);
     expect(res.body.code).toBe('VAL_001');
@@ -121,7 +121,7 @@ describe('POST /auth/login', () => {
     mockLogin.mockRejectedValue(new AuthError('AUTH_004', 'Invalid credentials', 401));
 
     const res = await request(app)
-      .post('/auth/login')
+      .post('/login')
       .send({ email: 'user@example.com', password: 'wrong-password' });
 
     expect(res.status).toBe(401);
@@ -129,18 +129,18 @@ describe('POST /auth/login', () => {
   });
 });
 
-describe('POST /auth/refresh', () => {
+describe('POST /refresh', () => {
   it('returns 200 with new access token on success', async () => {
     mockRefresh.mockResolvedValue({ accessToken: 'new-access-token' });
 
-    const res = await request(app).post('/auth/refresh').send({ refreshToken: 'valid-refresh-token' });
+    const res = await request(app).post('/refresh').send({ refreshToken: 'valid-refresh-token' });
 
     expect(res.status).toBe(200);
     expect(res.body.data).toEqual({ accessToken: 'new-access-token' });
   });
 
   it('returns 400 VAL_001 when refreshToken is missing', async () => {
-    const res = await request(app).post('/auth/refresh').send({});
+    const res = await request(app).post('/refresh').send({});
 
     expect(res.status).toBe(400);
     expect(res.body.code).toBe('VAL_001');
@@ -150,7 +150,7 @@ describe('POST /auth/refresh', () => {
   it('returns 401 AUTH_005 on an invalid or expired refresh token', async () => {
     mockRefresh.mockRejectedValue(new AuthError('AUTH_005', 'Invalid or expired refresh token', 401));
 
-    const res = await request(app).post('/auth/refresh').send({ refreshToken: 'expired-token' });
+    const res = await request(app).post('/refresh').send({ refreshToken: 'expired-token' });
 
     expect(res.status).toBe(401);
     expect(res.body.code).toBe('AUTH_005');

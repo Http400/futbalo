@@ -186,7 +186,7 @@ export function AuthForm({ mode, onSubmit, isLoading = false, error }: AuthFormP
       )}
 
       <Button
-        label={isSignUp ? 'Sign up' : 'Sign in'}
+        label={isSignUp ? 'Create account' : 'Sign in'}
         type="submit"
         variant="contained"
         fullWidth
