@@ -1,5 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type { ApiResponse, Match, PaginatedResponse, Stadium, Stage, Team } from '@futbalo/types';
+import { dynamicBaseQuery } from './dynamicBaseQuery';
 
 export interface GetMatchesParams {
   page: number;
@@ -8,7 +9,7 @@ export interface GetMatchesParams {
 
 export const catalogApi = createApi({
   reducerPath: 'catalogApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL  }),
+  baseQuery: dynamicBaseQuery,
   endpoints: (build) => ({
     getMatches: build.query<PaginatedResponse<Match>, GetMatchesParams>({
       query: ({ page, limit }) => `/data/matches?page=${page}&limit=${limit}`,
