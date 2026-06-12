@@ -5,6 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authApi } from './store/api/authApi';
 import { catalogApi } from './store/api/catalogApi';
 import authReducer from './store/slices/authSlice';
+import configReducer from './store/slices/configSlice';
 import App from './App';
 
 vi.mock('./components/GlobeWrapper', () => ({
@@ -15,9 +16,11 @@ function makeStore() {
   return configureStore({
     reducer: {
       auth: authReducer,
+      config: configReducer,
       [authApi.reducerPath]: authApi.reducer,
       [catalogApi.reducerPath]: catalogApi.reducer,
     },
+    preloadedState: { config: { apiBaseUrl: '/api' } },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(authApi.middleware, catalogApi.middleware),
   });

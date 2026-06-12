@@ -1,5 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type { ApiResponse, AuthTokens, LoginRequest } from '@futbalo/types';
+import { dynamicBaseQuery } from './dynamicBaseQuery';
 
 export interface RegisterRequest {
   email: string;
@@ -13,7 +14,7 @@ export interface RefreshRequest {
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL }),
+  baseQuery: dynamicBaseQuery,
   endpoints: (build) => ({
     register: build.mutation<ApiResponse<AuthTokens>, RegisterRequest>({
       query: (body) => ({
