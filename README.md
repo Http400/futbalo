@@ -16,6 +16,12 @@ futbalo/
     └── ui            # Shared React components
 ```
 
+## AI Skills
+
+Copilot skills live in [`.github/skills/`](/Users/pawel/Code/Mine/futbalo/.github/skills).
+Codex reads the same skills through a symlinked mirror at [`.agents/skills`](/Users/pawel/Code/Mine/futbalo/.agents/skills),
+so both tools stay aligned without duplicating skill files.
+
 ## Requirements
 
 - **Node.js** >= 20.16.0
