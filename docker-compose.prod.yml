@@ -1,0 +1,103 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    depends_on:
+      - postgres
+
+  auth-service:
+    image: ghcr.io/${GHCR_REPOSITORY}/auth-service:${APP_SHA}
+    restart: unless-stopped
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-3600}
+    command: sh -c "node_modules/.bin/prisma migrate deploy && node dist/index.js"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'node -e "fetch(''http://127.0.0.1:4000/health'').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  catalog-service:
+    image: ghcr.io/${GHCR_REPOSITORY}/catalog-service:${APP_SHA}
+    restart: unless-stopped
+    environment:
+      PORT: 4001
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+    command: sh -c "node_modules/.bin/prisma migrate deploy && node dist/index.js"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'node -e "fetch(''http://127.0.0.1:4001/health'').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  web-app:
+    image: ghcr.io/${GHCR_REPOSITORY}/web-app:${APP_SHA}
+    restart: unless-stopped
+
+  admin-app:
+    image: ghcr.io/${GHCR_REPOSITORY}/admin-app:${APP_SHA}
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/config-location.conf:/etc/nginx/config-location.conf:ro
+    volumes_from:
+      - web-app
+      - admin-app
+    depends_on:
+      - web-app
+      - admin-app
+      - auth-service
+      - catalog-service
+      - pgadmin
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.3.0
+    command: ['tunnel', '--no-autoupdate', 'run', '--token', '${CLOUDFLARED_TOKEN}']
+    depends_on:
+      - nginx
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
