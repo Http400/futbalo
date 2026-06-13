@@ -33,7 +33,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  GHCR_REPOSITORY: ${{ github.repository }}
+  GHCR_REPOSITORY: http400/futbalo # hardcoded cause Docker image repository names must be lowercase (could be normalized in the future)
 
 jobs:
   deploy:
