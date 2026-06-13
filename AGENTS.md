@@ -392,7 +392,7 @@ Task(subagent_type=codebase-pattern-finder):
 | API routes / HTTP handlers (e.g. controllers, route files) | services/<service_name>/src/app.ts |
 | DB models / queries / migrations | services/<service_name>/prisma/ |
 | Frontend pages / routes (delete row if backend-only) | apps/<app_name>/src |
-| Frontend state management (delete row if server-rendered or backend-only) | not added yet |
+| Frontend state management (delete row if server-rendered or backend-only) | apps/<app_name>/src/store |
 | UI components / views / templates | apps/<app_name>/src/components |
 | Tests | apps/<app_name>/src/*.test.ts|tsx |
 | common types | packages/types |

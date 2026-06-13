@@ -142,4 +142,7 @@ Without this section, agents will default to best-practices-in-general
 instead of best-practices-for-this-project.
 -->
 
-_(add project-specific architectural decisions here)_
+### Monorepo architecture
+- **Choice**: Monorepo with pnpm and turborepo
+- **Why**: To separate the project into smaller pieces
+- **Consequence**: Building and running multiple Docker images
